@@ -4,9 +4,42 @@
 module ledger.mojom;
 
 struct ContributionInfo {
-  string publisher;  // Filled only for recurrent tips
-  double value;
-  uint64 date;
+  string id;
+  int32 type;
+  double amount;
+  string probi;
+  uint32 created_date;
+  uint32 reconciled_date;
+  array<ExchangeRateInfo> exchange_rates;
+  array<BallotInfo> ballots;
+  ContributionStateInfo state;
+};
+
+struct ContributionStateInfo {
+  string anonize_viewing_id;
+  string surveyor_id;
+  string registrar_vk;
+  string master_user_token;
+};
+
+struct ExchangeRateInfo {
+  string currency_code;
+  double rate;
+};
+
+struct BallotInfo {
+  string publisher_key;
+  int32 count;
+};
+
+struct BatchVotesInfo {
+  string surveyor_id;
+  string proof;
+};
+
+struct BatchVotes {
+  string publisher_key;
+  array<BatchVotesInfo> batch_votes_info;
 };
 
 struct PublisherInfo {
@@ -46,12 +79,12 @@ struct PendingContribution {
   double amount;
   uint64 added_date;
   string viewing_id;
-  RewardsCategory category;
+  RewardsType type;
 };
 
 struct PendingContributionInfo {
   string publisher_key;
-  RewardsCategory category;
+  RewardsType type;
   PublisherStatus status = PublisherStatus.NOT_VERIFIED;
   string name;
   string url;
@@ -245,7 +278,7 @@ struct TransferFee {
   uint32 execution_id;
 };
 
-enum RewardsCategory {
+enum RewardsType {
   AUTO_CONTRIBUTE = 2,
   ONE_TIME_TIP = 8,
   RECURRING_TIP = 16,

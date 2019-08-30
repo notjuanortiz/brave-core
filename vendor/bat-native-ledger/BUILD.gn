@@ -65,10 +65,18 @@ source_set("headers") {
   public_configs = [ ":external_config" ]
 
   sources = [
+    "include/bat/ledger/activity_info_filter.h",
     "include/bat/ledger/auto_contribute_props.h",
     "include/bat/ledger/balance.h",
     "include/bat/ledger/balance_report_info.h",
     "include/bat/ledger/export.h",
+    "include/bat/ledger/ballot_info.h",
+    "include/bat/ledger/batch_votes_info.h",
+    "include/bat/ledger/batch_votes.h",
+    "include/bat/ledger/contribution_info.h",
+    "include/bat/ledger/contribution_state.h",
+    "include/bat/ledger/exchange_rate_info.h",
+    "include/bat/ledger/exclude_filter.h",
     "include/bat/ledger/grant.h",
     "include/bat/ledger/ledger.h",
     "include/bat/ledger/ledger_callback_handler.h",
