@@ -68,3 +68,4 @@ const char kBraveWalletEncryptedSeed[] = "brave.wallet.encrypted_seed";
 const char kBraveWalletEnabled[] = "brave.wallet.enabled";
 const char kAlwaysShowBookmarkBarOnNTP[] =
     "brave.always_show_bookmark_bar_on_ntp";
+const char kBraveWaybackMachineEnabled[] = "brave.wayback_machine_enabled";

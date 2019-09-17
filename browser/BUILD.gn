@@ -8,6 +8,7 @@ import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
 import("//extensions/buildflags/buildflags.gni")
 import("//third_party/widevine/cdm/widevine.gni")
+import("//brave/components/brave_wayback_machine/browser/buildflags/buildflags.gni")
 
 source_set("browser_process") {
   visibility = [
@@ -140,6 +141,7 @@ source_set("browser_process") {
     "//services/network/public/cpp",
     "//services/service_manager/embedder",
     "//ui/base",
+    "//brave/components/brave_wayback_machine/browser/buildflags",
   ]
 
   if (enable_greaselion) {
@@ -229,6 +231,12 @@ source_set("browser_process") {
 
     deps += [
       "//google_update",
+    ]
+  }
+
+  if (enable_brave_wayback_machine) {
+    deps += [
+      "//brave/components/brave_wayback_machine/browser",
     ]
   }
 }

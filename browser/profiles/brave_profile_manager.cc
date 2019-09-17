@@ -19,6 +19,7 @@
 #include "brave/common/tor/pref_names.h"
 #include "brave/common/tor/tor_constants.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
+#include "brave/components/brave_wayback_machine/browser/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service.h"
@@ -79,6 +80,9 @@ void BraveProfileManager::InitTorProfileUserPrefs(Profile* profile) {
   // settings page for Tor windows.
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
   pref_service->SetBoolean(prefs::kOfferTranslateEnabled, false);
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+  pref_service->SetBoolean(kBraveWaybackMachineEnabled, false);
 #endif
 }
 

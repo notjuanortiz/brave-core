@@ -2,6 +2,7 @@ import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_sync/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
+import("//brave/components/brave_wayback_machine/browser/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 
 declare_args() {
@@ -95,6 +96,12 @@ source_set("extensions") {
     deps += [
       "//brave/components/brave_webtorrent:generated_resources",
       "//brave/components/brave_webtorrent:static_resources",
+    ]
+  }
+  if (enable_brave_wayback_machine) {
+    deps += [
+      "//brave/components/brave_wayback_machine:generated_resources",
+      "//brave/components/brave_wayback_machine:static_resources",
     ]
   }
 }

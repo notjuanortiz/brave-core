@@ -94,6 +94,9 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
   (*s_brave_whitelist)[kBraveEnabledMediaRouter] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   return *s_brave_whitelist;
+  // Wayback Machine pref
+  (*s_brave_whitelist)[kBraveWaybackMachineEnabled] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
 }
 
 }  // namespace extensions

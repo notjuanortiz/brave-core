@@ -14,6 +14,7 @@
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
+#include "brave/components/brave_wayback_machine/grit/brave_wayback_machine_resources.h"
 #include "chrome/browser/about_flags.h"
 #include "chrome/browser/extensions/component_loader.h"
 #include "chrome/browser/extensions/extension_service.h"
@@ -62,6 +63,10 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
       base::BindRepeating(
         &BraveDefaultExtensionsHandler::SetMediaRouterEnabled,
         base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "setWaybackMachineEnabled",
+      base::BindRepeating(&BraveDefaultExtensionsHandler::SetWaybackMachineEnabled,
+                          base::Unretained(this)));
   // TODO(petemill): If anything outside this handler is responsible for causing
   // restart-neccessary actions, then this should be moved to a generic handler
   // and the flag should be moved to somewhere more static / singleton-like.
@@ -129,6 +134,31 @@ void BraveDefaultExtensionsHandler::SetWebTorrentEnabled(
     service->EnableExtension(brave_webtorrent_extension_id);
   } else {
     service->DisableExtension(brave_webtorrent_extension_id,
+        extensions::disable_reason::DisableReason::DISABLE_BLOCKED_BY_POLICY);
+  }
+}
+
+void BraveDefaultExtensionsHandler::SetWaybackMachineEnabled(
+    const base::ListValue* args) {
+  CHECK_EQ(args->GetSize(), 1U);
+  CHECK(profile_);
+  bool enabled;
+  args->GetBoolean(0, &enabled);
+
+  extensions::ExtensionService* service =
+    extensions::ExtensionSystem::Get(profile_)->extension_service();
+  extensions::ComponentLoader* loader = service->component_loader();
+
+  if (enabled) {
+    if (!loader->Exists(brave_wayback_machine_extension_id)) {
+      base::FilePath brave_wayback_machine_path(FILE_PATH_LITERAL(""));
+      brave_wayback_machine_path =
+        brave_wayback_machine_path.Append(FILE_PATH_LITERAL("brave_wayback_machine"));
+      loader->Add(IDR_BRAVE_WAYBACK_MACHINE, brave_wayback_machine_path);
+    }
+    service->EnableExtension(brave_wayback_machine_extension_id);
+  } else {
+    service->DisableExtension(brave_wayback_machine_extension_id,
         extensions::disable_reason::DisableReason::DISABLE_BLOCKED_BY_POLICY);
   }
 }
@@ -236,3 +266,4 @@ void BraveDefaultExtensionsHandler::SetBraveWalletEnabled(
         extensions::disable_reason::DisableReason::DISABLE_USER_ACTION);
   }
 }
+

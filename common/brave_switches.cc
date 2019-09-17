@@ -53,4 +53,6 @@ const char kEnableSmartTrackingProtection[] =
 
 const char kFastWidevineBundleUpdate[] = "fast-widevine-bundle-update";
 
+// Allows disabling the Wayback Machine extension.
+const char kDisableWaybackMachineExtension[] = "disable-wayback-machine-extension";
 }  // namespace switches

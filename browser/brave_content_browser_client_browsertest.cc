@@ -479,4 +479,13 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientReferrerTest,
                               kRequestUrl, kDocumentUrl, true,
                               &referrer);
   EXPECT_EQ(referrer.url, kDocumentUrl);
+
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
+                       WaybackMachineExtensionEnabledByDefault) {
+  ASSERT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(kBraveWaybackMachineEnabled));
+  extensions::ExtensionRegistry* registry =
+      extensions::ExtensionRegistry::Get(browser()->profile());
+  ASSERT_TRUE(
+      registry->enabled_extensions().Contains(brave_wayback_machine_extension_id));
+}
 }

@@ -20,6 +20,7 @@
 #include "extensions/buildflags/buildflags.h"
 #include "extensions/common/feature_switch.h"
 #include "third_party/widevine/cdm/buildflags.h"
+#include "brave/components/brave_wayback_machine/browser/buildflags/buildflags.h"
 
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
 #include "brave/browser/widevine/brave_widevine_bundle_manager.h"
@@ -27,6 +28,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+#include "brave/components/brave_wayback_machine/browser/wayback_machine_util.h"
 #endif
 
 #if !defined(OS_ANDROID)
@@ -73,6 +78,11 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // WebTorrent
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
   webtorrent::RegisterProfilePrefs(registry);
+#endif
+
+  // wayback machine
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+  brave_wayback_machine::RegisterProfilePrefs(registry);
 #endif
 
   // Hangouts

@@ -206,6 +206,7 @@ BravePatching.RegisterPolymerTemplateModifications({
     r.SOCIAL_BLOCKING = r.BASIC.createSection('/socialBlocking', 'socialBlocking')
     r.EXTENSIONS = r.BASIC.createSection('/extensions', 'extensions')
     r.BRAVE_SYNC = r.BASIC.createSection('/braveSync', 'braveSync')
+    r.BRAVE_HELP_TIPS = r.BASIC.createSection('/braveHelpTips', 'braveHelpTips')
     if (!r.SITE_SETTINGS) {
       console.error('[Brave Settings Overrides] Routes: could not find SITE_SETTINGS page')
     }
@@ -275,6 +276,15 @@ BravePatching.RegisterPolymerTemplateModifications({
           <settings-social-blocking-page prefs="{{prefs}}"></settings-social-blocking-page>
         </settings-section>
       `
+      const sectionHelpTips = document.createElement('template')
+      sectionHelpTips.setAttribute('is', 'dom-if')
+      sectionHelpTips.setAttribute('restamp', true)
+      sectionHelpTips.setAttribute('if', '[[showPage_(pageVisibility.braveHelpTips)]]')
+      sectionHelpTips.innerHTML = `
+        <settings-section page-title="${loadTimeData.getString('braveHelpTips')}" section="braveHelpTips">
+          <settings-brave-help-tips-page prefs="{{prefs}}"></settings-brave-help-tips-page>
+        </settings-section>
+      `
       // Get Started at top
       basicPageEl.insertAdjacentElement('afterbegin', sectionGetStarted)
       // Move Appearance item
@@ -316,6 +326,9 @@ BravePatching.RegisterPolymerTemplateModifications({
       const sectionAutofill = getSectionElement(actualTemplate.content, 'autofill')
       const sectionPrivacy = getSectionElement(advancedSubSectionsTemplate.content, 'privacy')
       sectionPrivacy.insertAdjacentElement('afterend', sectionAutofill)
+      // Move help tips after printing
+      const sectionPrinting = getSectionElement(advancedSubSectionsTemplate.content, 'printing')
+      sectionPrinting.insertAdjacentElement('afterend', sectionHelpTips)
     }
   },
   'settings-default-browser-page': (templateContent) => {

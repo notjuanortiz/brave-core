@@ -17,6 +17,7 @@
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_extension_resources.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
+#include "brave/components/brave_wayback_machine/grit/brave_wayback_machine_resources.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/components_ui.h"
@@ -104,6 +105,15 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
     brave_webtorrent_path =
       brave_webtorrent_path.Append(FILE_PATH_LITERAL("brave_webtorrent"));
     Add(IDR_BRAVE_WEBTORRENT, brave_webtorrent_path);
+  }
+
+  if (!command_line.HasSwitch(switches::kDisableWaybackMachineExtension) &&
+      (!profile_prefs_->FindPreference(kBraveWaybackMachineEnabled) ||
+      profile_prefs_->GetBoolean(kBraveWaybackMachineEnabled))) {
+    base::FilePath brave_wayback_machine_path(FILE_PATH_LITERAL(""));
+    brave_wayback_machine_path =
+      brave_wayback_machine_path.Append(FILE_PATH_LITERAL("brave_wayback_machine"));
+    Add(IDR_BRAVE_WAYBACK_MACHINE, brave_wayback_machine_path);
   }
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)

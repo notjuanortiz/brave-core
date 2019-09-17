@@ -1,0 +1,74 @@
+.banner-wayback-machine-banner-hidden {
+  display: none !important;
+}
+
+.image-wayback-machine-banner {
+  height: 40px;
+}
+
+.banner-wayback-machine-banner {
+  font-family: 'Poppins', sans-serif;
+  align-items: center;
+  font-size: 13px;
+  position: fixed;
+  z-index: 2147483638; /* highest possible */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  padding: 10px 40px;
+  background: #fff;
+  box-shadow: rgba(0, 0, 0, 0.5) 1px 2px 20px 1px;
+}
+
+.banner-wayback-machine-banner *:nth-child(2) {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.banner-wayback-machine-banner *:nth-child(2) strong {
+  margin-right: 4px;
+}
+
+.banner-wayback-machine-banner *:last-child {
+  display: flex;
+}
+
+.button-wayback-machine-banner {
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  user-select: none;
+  font-size: 13px;
+  width: auto;
+  min-width: 104px;
+  background: none;
+  border-width: initial;
+  border-style: none;
+  border-color: initial;
+  border-image: initial;
+  border-radius: 20px;
+  padding: 11px 15px;
+  background-color: #FB542B;
+  color: #fff;
+  font-weight: 400;
+}
+
+.close-button-wayback-machine-banner {
+  cursor: pointer;
+  -webkit-appearance: none;
+  font-size: 30px;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  line-height: 1.1;
+  margin-left: 12px;
+}

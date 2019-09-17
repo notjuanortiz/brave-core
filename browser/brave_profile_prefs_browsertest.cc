@@ -48,6 +48,8 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
       browser()->profile()->GetPrefs()->GetBoolean(kIPFSCompanionEnabled));
   EXPECT_TRUE(
       browser()->profile()->GetPrefs()->GetBoolean(kBraveWalletEnabled));
+  EXPECT_TRUE(
+      browser()->profile()->GetPrefs()->GetBoolean(kBraveWaybackMachineEnabled));
 }
 
 // First run of Brave should default Shields to Simple view

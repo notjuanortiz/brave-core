@@ -36,6 +36,7 @@ extern const char kEnableSmartTrackingProtection[];
 
 extern const char kFastWidevineBundleUpdate[];
 
+extern const char kDisableWaybackMachineExtension[];
 }  // namespace switches
 
 #endif  // BRAVE_COMMON_BRAVE_SWITCHES_H_
