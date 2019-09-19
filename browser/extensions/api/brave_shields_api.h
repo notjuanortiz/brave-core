@@ -11,7 +11,7 @@
 namespace extensions {
 namespace api {
 
-class BraveShieldsAllowScriptsOnceFunction : public UIThreadExtensionFunction {
+class BraveShieldsAllowScriptsOnceFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveShields.allowScriptsOnce", UNKNOWN)
 
@@ -22,7 +22,7 @@ class BraveShieldsAllowScriptsOnceFunction : public UIThreadExtensionFunction {
 };
 
 class BraveShieldsSetBraveShieldsEnabledFunction
-    : public UIThreadExtensionFunction {
+    : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveShields.setBraveShieldsEnabled", UNKNOWN)
 
@@ -33,7 +33,7 @@ class BraveShieldsSetBraveShieldsEnabledFunction
 };
 
 class BraveShieldsGetBraveShieldsEnabledFunction
-    : public UIThreadExtensionFunction {
+    : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveShields.getBraveShieldsEnabled", UNKNOWN)
 
@@ -43,7 +43,7 @@ class BraveShieldsGetBraveShieldsEnabledFunction
   ResponseAction Run() override;
 };
 
-class BraveShieldsSetAdControlTypeFunction : public UIThreadExtensionFunction {
+class BraveShieldsSetAdControlTypeFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveShields.setAdControlType", UNKNOWN)
 
@@ -53,7 +53,7 @@ class BraveShieldsSetAdControlTypeFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveShieldsGetAdControlTypeFunction : public UIThreadExtensionFunction {
+class BraveShieldsGetAdControlTypeFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveShields.getAdControlType", UNKNOWN)
 
@@ -64,7 +64,7 @@ class BraveShieldsGetAdControlTypeFunction : public UIThreadExtensionFunction {
 };
 
 class BraveShieldsSetCookieControlTypeFunction
-    : public UIThreadExtensionFunction {
+    : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveShields.setCookieControlType", UNKNOWN)
 
@@ -75,7 +75,7 @@ class BraveShieldsSetCookieControlTypeFunction
 };
 
 class BraveShieldsGetCookieControlTypeFunction
-    : public UIThreadExtensionFunction {
+    : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveShields.getCookieControlType", UNKNOWN)
 
@@ -86,7 +86,7 @@ class BraveShieldsGetCookieControlTypeFunction
 };
 
 class BraveShieldsSetFingerprintingControlTypeFunction
-    : public UIThreadExtensionFunction {
+    : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveShields.setFingerprintingControlType",
                              UNKNOWN)
@@ -98,7 +98,7 @@ class BraveShieldsSetFingerprintingControlTypeFunction
 };
 
 class BraveShieldsGetFingerprintingControlTypeFunction
-    : public UIThreadExtensionFunction {
+    : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveShields.getFingerprintingControlType",
                              UNKNOWN)
@@ -110,7 +110,7 @@ class BraveShieldsGetFingerprintingControlTypeFunction
 };
 
 class BraveShieldsSetHTTPSEverywhereEnabledFunction
-    : public UIThreadExtensionFunction {
+    : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveShields.setHTTPSEverywhereEnabled",
                              UNKNOWN)
@@ -122,7 +122,7 @@ class BraveShieldsSetHTTPSEverywhereEnabledFunction
 };
 
 class BraveShieldsGetHTTPSEverywhereEnabledFunction
-    : public UIThreadExtensionFunction {
+    : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveShields.getHTTPSEverywhereEnabled",
                              UNKNOWN)
@@ -134,7 +134,7 @@ class BraveShieldsGetHTTPSEverywhereEnabledFunction
 };
 
 class BraveShieldsSetNoScriptControlTypeFunction
-    : public UIThreadExtensionFunction {
+    : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveShields.setNoScriptControlType", UNKNOWN)
 
@@ -145,7 +145,7 @@ class BraveShieldsSetNoScriptControlTypeFunction
 };
 
 class BraveShieldsGetNoScriptControlTypeFunction
-    : public UIThreadExtensionFunction {
+    : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveShields.getNoScriptControlType", UNKNOWN)
 

@@ -19,7 +19,7 @@
 namespace extensions {
 namespace api {
 
-class BraveRewardsCreateWalletFunction : public UIThreadExtensionFunction {
+class BraveRewardsCreateWalletFunction : public ExtensionFunction {
  public:
   BraveRewardsCreateWalletFunction();
   DECLARE_EXTENSION_FUNCTION("braveRewards.createWallet", UNKNOWN)
@@ -33,7 +33,7 @@ class BraveRewardsCreateWalletFunction : public UIThreadExtensionFunction {
   void OnCreateWallet(int32_t result);
 };
 
-class BraveRewardsTipSiteFunction : public UIThreadExtensionFunction {
+class BraveRewardsTipSiteFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.tipSite", UNKNOWN)
 
@@ -44,7 +44,7 @@ class BraveRewardsTipSiteFunction : public UIThreadExtensionFunction {
 };
 
 class BraveRewardsTipTwitterUserFunction
-    : public UIThreadExtensionFunction {
+    : public ExtensionFunction {
  public:
   BraveRewardsTipTwitterUserFunction();
   DECLARE_EXTENSION_FUNCTION("braveRewards.tipTwitterUser", UNKNOWN)
@@ -61,7 +61,7 @@ class BraveRewardsTipTwitterUserFunction
 };
 
 class BraveRewardsTipGitHubUserFunction
-    : public UIThreadExtensionFunction {
+    : public ExtensionFunction {
  public:
   BraveRewardsTipGitHubUserFunction();
   DECLARE_EXTENSION_FUNCTION("braveRewards.tipGitHubUser", UNKNOWN)
@@ -76,7 +76,7 @@ class BraveRewardsTipGitHubUserFunction
       std::unique_ptr<brave_rewards::ContentSite> publisher_info);
 };
 
-class BraveRewardsTipRedditUserFunction : public UIThreadExtensionFunction {
+class BraveRewardsTipRedditUserFunction : public ExtensionFunction {
  public:
   BraveRewardsTipRedditUserFunction();
   DECLARE_EXTENSION_FUNCTION("braveRewards.tipRedditUser", UNKNOWN)
@@ -91,7 +91,7 @@ class BraveRewardsTipRedditUserFunction : public UIThreadExtensionFunction {
       std::unique_ptr<brave_rewards::ContentSite> publisher_info);
 };
 
-class BraveRewardsGetPublisherDataFunction : public UIThreadExtensionFunction {
+class BraveRewardsGetPublisherDataFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getPublisherData", UNKNOWN)
 
@@ -102,7 +102,7 @@ class BraveRewardsGetPublisherDataFunction : public UIThreadExtensionFunction {
 };
 
 class BraveRewardsGetWalletPropertiesFunction
-    : public UIThreadExtensionFunction {
+    : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getWalletProperties", UNKNOWN)
 
@@ -112,7 +112,7 @@ class BraveRewardsGetWalletPropertiesFunction
   ResponseAction Run() override;
 };
 
-class BraveRewardsGetCurrentReportFunction : public UIThreadExtensionFunction {
+class BraveRewardsGetCurrentReportFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getCurrentReport", UNKNOWN)
 
@@ -123,7 +123,7 @@ class BraveRewardsGetCurrentReportFunction : public UIThreadExtensionFunction {
 };
 
 class BraveRewardsIncludeInAutoContributionFunction :
-  public UIThreadExtensionFunction {
+  public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.includeInAutoContribution", UNKNOWN)
 
@@ -133,7 +133,7 @@ class BraveRewardsIncludeInAutoContributionFunction :
   ResponseAction Run() override;
 };
 
-class BraveRewardsGetGrantsFunction : public UIThreadExtensionFunction {
+class BraveRewardsGetGrantsFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getGrants", UNKNOWN)
 
@@ -143,7 +143,7 @@ class BraveRewardsGetGrantsFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsGetGrantCaptchaFunction : public UIThreadExtensionFunction {
+class BraveRewardsGetGrantCaptchaFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getGrantCaptcha", UNKNOWN)
 
@@ -153,7 +153,7 @@ class BraveRewardsGetGrantCaptchaFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsSolveGrantCaptchaFunction : public UIThreadExtensionFunction {
+class BraveRewardsSolveGrantCaptchaFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.solveGrantCaptcha", UNKNOWN)
 
@@ -164,7 +164,7 @@ class BraveRewardsSolveGrantCaptchaFunction : public UIThreadExtensionFunction {
 };
 
 class BraveRewardsGetPendingContributionsTotalFunction
-    : public UIThreadExtensionFunction {
+    : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION(
       "braveRewards.getPendingContributionsTotal", UNKNOWN)
@@ -179,7 +179,7 @@ class BraveRewardsGetPendingContributionsTotalFunction
 };
 
 class BraveRewardsGetRewardsMainEnabledFunction
-    : public UIThreadExtensionFunction {
+    : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getRewardsMainEnabled", UNKNOWN)
 
@@ -192,7 +192,7 @@ class BraveRewardsGetRewardsMainEnabledFunction
   void OnGetRewardsMainEnabled(bool enabled);
 };
 
-class BraveRewardsSaveAdsSettingFunction : public UIThreadExtensionFunction {
+class BraveRewardsSaveAdsSettingFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.saveAdsSetting", UNKNOWN)
 
@@ -202,7 +202,7 @@ class BraveRewardsSaveAdsSettingFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsGetACEnabledFunction : public UIThreadExtensionFunction {
+class BraveRewardsGetACEnabledFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getACEnabled", UNKNOWN)
 
@@ -215,7 +215,7 @@ class BraveRewardsGetACEnabledFunction : public UIThreadExtensionFunction {
   void OnGetACEnabled(bool enabled);
 };
 
-class BraveRewardsSaveSettingFunction : public UIThreadExtensionFunction {
+class BraveRewardsSaveSettingFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.saveSetting", UNKNOWN)
 
@@ -226,7 +226,7 @@ class BraveRewardsSaveSettingFunction : public UIThreadExtensionFunction {
 };
 
 class BraveRewardsSaveRecurringTipFunction :
-  public UIThreadExtensionFunction {
+  public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.saveRecurringTip", UNKNOWN)
 
@@ -240,7 +240,7 @@ class BraveRewardsSaveRecurringTipFunction :
 };
 
 class BraveRewardsRemoveRecurringTipFunction :
-  public UIThreadExtensionFunction {
+  public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.removeRecurringTip", UNKNOWN)
 
@@ -251,7 +251,7 @@ class BraveRewardsRemoveRecurringTipFunction :
 };
 
 class BraveRewardsGetRecurringTipsFunction :
-  public UIThreadExtensionFunction {
+  public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getRecurringTips", UNKNOWN)
 
@@ -266,7 +266,7 @@ class BraveRewardsGetRecurringTipsFunction :
 };
 
 class BraveRewardsGetPublisherBannerFunction :
-public UIThreadExtensionFunction {
+public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION(
       "braveRewards.getPublisherBanner", UNKNOWN)
@@ -281,7 +281,7 @@ public UIThreadExtensionFunction {
       std::unique_ptr<::brave_rewards::PublisherBanner> banner);
 };
 
-class BraveRewardsRefreshPublisherFunction : public UIThreadExtensionFunction {
+class BraveRewardsRefreshPublisherFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.refreshPublisher", UNKNOWN)
 
@@ -295,7 +295,7 @@ class BraveRewardsRefreshPublisherFunction : public UIThreadExtensionFunction {
 };
 
 class BraveRewardsGetAllNotificationsFunction :
-    public UIThreadExtensionFunction {
+    public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getAllNotifications", UNKNOWN)
 
@@ -306,7 +306,7 @@ class BraveRewardsGetAllNotificationsFunction :
 };
 
 class BraveRewardsGetInlineTipSettingFunction :
-    public UIThreadExtensionFunction {
+    public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getInlineTipSetting", UNKNOWN)
 
@@ -320,7 +320,7 @@ class BraveRewardsGetInlineTipSettingFunction :
 };
 
 class BraveRewardsFetchBalanceFunction :
-    public UIThreadExtensionFunction {
+    public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.fetchBalance", UNKNOWN)
 
@@ -335,7 +335,7 @@ class BraveRewardsFetchBalanceFunction :
 };
 
 class BraveRewardsGetExternalWalletFunction :
-    public UIThreadExtensionFunction {
+    public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getExternalWallet", UNKNOWN)
 
@@ -351,7 +351,7 @@ class BraveRewardsGetExternalWalletFunction :
 };
 
 class BraveRewardsDisconnectWalletFunction :
-    public UIThreadExtensionFunction {
+    public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.disconnectWallet", UNKNOWN)
 
