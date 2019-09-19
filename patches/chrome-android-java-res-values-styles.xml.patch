@@ -1,0 +1,10 @@
+diff --git a/chrome/android/java/res/values/styles.xml b/chrome/android/java/res/values/styles.xml
+index 23846b4c47b86eed72b372cf5d20b555acd2d3bb..66d842b8d3914e6d39950d84ba28a624a71ae5bd 100644
+--- a/chrome/android/java/res/values/styles.xml
++++ b/chrome/android/java/res/values/styles.xml
+@@ -971,4 +971,5 @@
+     <style name="DarkModeCompatibleVerticalScrolling">
+         <item name="android:scrollbarThumbVertical">@color/default_scroll_thumb</item>
+     </style>
++    <style name="BraveSwitchTheme"> <item name="colorControlActivated">#fb542b</item> </style>
+ </resources>
