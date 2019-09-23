@@ -60,8 +60,10 @@ SkColor BraveAlertIndicator::GetBackgroundColor() const {
   if (!IsAudioState(alert_state_) || !IsMouseHovered())
     return colors.background_color;
 
-  return mouse_pressed_ ? colors.button_background_pressed_color
-                        : colors.button_background_hovered_color;
+  // https://chromium.googlesource.com/chromium/src/+/1d04bbbdf462225f239965eed6318937350f61f6
+  //return mouse_pressed_ ? colors.button_background_pressed_color
+  //                      : colors.button_background_hovered_color;
+  return colors.background_color;
 }
 
 bool BraveAlertIndicator::OnMousePressed(const ui::MouseEvent& event) {
