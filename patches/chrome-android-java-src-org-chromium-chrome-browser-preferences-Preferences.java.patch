@@ -1,0 +1,21 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/preferences/Preferences.java b/chrome/android/java/src/org/chromium/chrome/browser/preferences/Preferences.java
+index 8c8c06dc96f7b43c89ff24e487d1fbd893102a0b..e8a7630d63a2f17d4ede025be254642185fa77a5 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/preferences/Preferences.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/preferences/Preferences.java
+@@ -34,6 +34,7 @@ import org.chromium.chrome.R;
+ import org.chromium.chrome.browser.ChromeBaseAppCompatActivity;
+ import org.chromium.chrome.browser.help.HelpAndFeedback;
+ import org.chromium.chrome.browser.init.ChromeBrowserInitializer;
++import org.chromium.chrome.browser.preferences.BraveMainPreferences;
+ import org.chromium.chrome.browser.profiles.Profile;
+ import org.chromium.chrome.browser.profiles.ProfileManagerUtils;
+ 
+@@ -112,7 +113,7 @@ public class Preferences extends ChromeBaseAppCompatActivity
+         // If savedInstanceState is non-null, then the activity is being
+         // recreated and super.onCreate() has already recreated the fragment.
+         if (savedInstanceState == null) {
+-            if (initialFragment == null) initialFragment = MainPreferences.class.getName();
++            if (initialFragment == null) initialFragment = BraveMainPreferences.class.getName();
+ 
+             Fragment fragment = Fragment.instantiate(this, initialFragment, initialArguments);
+             getSupportFragmentManager()

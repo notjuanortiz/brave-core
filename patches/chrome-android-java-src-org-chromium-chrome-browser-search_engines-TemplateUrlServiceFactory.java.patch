@@ -1,0 +1,46 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/search_engines/TemplateUrlServiceFactory.java b/chrome/android/java/src/org/chromium/chrome/browser/search_engines/TemplateUrlServiceFactory.java
+index f6b088478e9b3f4380eabb6778a52504616a894f..075cb40da96347bd15930a79f853d6d7616d0b64 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/search_engines/TemplateUrlServiceFactory.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/search_engines/TemplateUrlServiceFactory.java
+@@ -6,6 +6,7 @@ package org.chromium.chrome.browser.search_engines;
+ 
+ import org.chromium.base.ThreadUtils;
+ import org.chromium.base.VisibleForTesting;
++import org.chromium.components.search_engines.BraveTemplateUrlService;
+ import org.chromium.components.search_engines.TemplateUrlService;
+ 
+ /**
+@@ -13,14 +14,14 @@ import org.chromium.components.search_engines.TemplateUrlService;
+  * {@link TemplateUrlService} singleton.
+  */
+ public class TemplateUrlServiceFactory {
+-    private static TemplateUrlService sTemplateUrlService;
++    private static BraveTemplateUrlService sTemplateUrlService;
+ 
+     private TemplateUrlServiceFactory() {}
+ 
+     /**
+      * @return The singleton instance of {@link TemplateUrlService}, creating it if necessary.
+      */
+-    public static TemplateUrlService get() {
++    public static BraveTemplateUrlService get() {
+         ThreadUtils.assertOnUiThread();
+         if (sTemplateUrlService == null) {
+             sTemplateUrlService = nativeGetTemplateUrlService();
+@@ -29,7 +30,7 @@ public class TemplateUrlServiceFactory {
+     }
+ 
+     @VisibleForTesting
+-    static void setInstanceForTesting(TemplateUrlService service) {
++    static void setInstanceForTesting(BraveTemplateUrlService service) {
+         sTemplateUrlService = service;
+     }
+ 
+@@ -40,6 +41,6 @@ public class TemplateUrlServiceFactory {
+         return nativeDoesDefaultSearchEngineHaveLogo();
+     }
+ 
+-    private static native TemplateUrlService nativeGetTemplateUrlService();
++    private static native BraveTemplateUrlService nativeGetTemplateUrlService();
+     private static native boolean nativeDoesDefaultSearchEngineHaveLogo();
+ }

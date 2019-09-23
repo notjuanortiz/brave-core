@@ -1,0 +1,25 @@
+diff --git a/chrome/android/java/res/layout/new_tab_page_incognito.xml b/chrome/android/java/res/layout/new_tab_page_incognito.xml
+index b294fa17a33e3c089babc00ca4d17b2a62a9e8f3..bbf4068b3463b6afe2ee136e18ee489c0083561e 100644
+--- a/chrome/android/java/res/layout/new_tab_page_incognito.xml
++++ b/chrome/android/java/res/layout/new_tab_page_incognito.xml
+@@ -82,6 +82,20 @@
+                 android:textAppearance="@style/TextAppearance.IncognitoNewTabLearnMoreLinkModern"
+                 android:lineSpacingExtra="@dimen/md_incognito_ntp_line_spacing" />
+ 
++            <TextView
++                android:id="@+id/ddg_offer_link"
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:gravity="center_vertical"
++                android:text="@string/ddg_offer_link"
++                android:textColor="@color/modern_grey_400"
++                android:drawableStart="@drawable/duckduckgo"
++                android:drawablePadding="15dp"
++                android:layout_marginTop="15dp"
++                android:textSize="28sp"
++                android:scaleX="0.5"
++                android:scaleY="0.5" />
++
+         </LinearLayout>
+ 
+     </org.chromium.chrome.browser.ntp.NewTabPageScrollView>

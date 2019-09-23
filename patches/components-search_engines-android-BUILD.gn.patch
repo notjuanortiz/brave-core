@@ -1,0 +1,15 @@
+diff --git a/components/search_engines/android/BUILD.gn b/components/search_engines/android/BUILD.gn
+index d6b37fc60a5ae8aa5c6d30ae5f7b174852abc590..98dc383a13f8d201d56fd1732e6fa49ae91b5f86 100644
+--- a/components/search_engines/android/BUILD.gn
++++ b/components/search_engines/android/BUILD.gn
+@@ -14,6 +14,10 @@ android_library("java") {
+     "java/src/org/chromium/components/search_engines/TemplateUrl.java",
+     "java/src/org/chromium/components/search_engines/TemplateUrlService.java",
+   ]
++
++  java_files += [
++    "../../../brave/android/java/org/chromium/components/search_engines/BraveTemplateUrlService.java",
++  ]
+ }
+ 
+ generate_jni("jni_headers") {

@@ -1,8 +1,19 @@
 diff --git a/chrome/android/java/res/values-v17/styles.xml b/chrome/android/java/res/values-v17/styles.xml
-index 5b41c992fb2b17c1b8a8a06ecc09460c4190fa86..b4a36c8d48dcc89a1dd0e9c661f4d3eedc757ed8 100644
+index 5b41c992fb2b17c1b8a8a06ecc09460c4190fa86..48364566c732574017436887801795bd02bb4e0a 100644
 --- a/chrome/android/java/res/values-v17/styles.xml
 +++ b/chrome/android/java/res/values-v17/styles.xml
-@@ -995,4 +995,5 @@
+@@ -198,6 +198,10 @@
+         <item name="windowActionBar">false</item>
+     </style>
+ 
++    <style name="BraveDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
++        <item name="windowNoTitle">true</item>
++    </style>
++
+     <!-- The dim amount should match the alpha of modal_dialog_scrim_color. -->
+     <style name="Theme.Chromium.ModalDialog" parent="Theme.Chromium.AlertDialog">
+         <item name="android:windowFrame">@null</item>
+@@ -995,4 +999,5 @@
          <item name="android:textAlignment">viewStart</item>
          <item name="android:textAppearance">@style/TextAppearance.BlackTitle1</item>
      </style>
