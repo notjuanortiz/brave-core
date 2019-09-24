@@ -36,6 +36,18 @@ window.cr.define('brave_adblock', function () {
       </Provider>,
       document.getElementById('root'))
     window.i18nTemplate.process(window.document, window.loadTimeData)
+    chrome.bravePlaylists.isInitialized((init) => {
+      if (init) {
+        return
+      }
+      // If not initialized, listen initialize event.
+      chrome.bravePlaylists.onInitialized.addListener(() => {
+        console.log(" ###### playlist initialized ######")
+        console.log(window.youtubedown_playlist_urls("https://www.youtube.com/watch?v=y3QmU79Vli8"))
+      })
+    })
+    // Initialize playlist API
+    chrome.bravePlaylists.initialize()
   }
 
   function onGetCustomFilters (customFilters: string) {

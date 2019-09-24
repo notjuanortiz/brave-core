@@ -15,7 +15,9 @@
     "channel": "stable",
     "contexts": ["webui"],
     "matches": [
-      "chrome://newtab/*"
+        "chrome://newtab/*",
+        "chrome://adblock/*",
+        "brave://adblock/*"
     ]
   }]
 }
