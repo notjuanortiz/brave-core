@@ -42,6 +42,37 @@ struct BatchVotes {
   array<BatchVotesInfo> batch_votes_info;
 };
 
+struct CurrentReconcile {
+  string viewing_id;
+  string ananize_viewing_id;
+  string registrar_vk;
+  string pre_flight;
+  string master_user_token;
+  SurveyorInfo surveyor_info;
+  uint64 timestamp;
+  map<string, double> rates;
+  string amount;
+  string currency;
+  double fee;
+  array<ReconcileDirection> directions;
+  uint32 type;
+  array<PublisherInfo> list;
+  ContributionRetry retry_step;
+  uint32 retry_level;
+  string destination;
+  string proof;
+};
+
+struct ReconcileDirection {
+  string publisher_key;
+  uint32 amount;
+  string currency_code;
+};
+
+struct SurveyorInfo {
+  string surveyor_id;
+};
+
 struct PublisherInfo {
   string id;
   uint64 duration;

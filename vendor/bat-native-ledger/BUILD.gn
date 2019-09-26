@@ -75,6 +75,7 @@ source_set("headers") {
     "include/bat/ledger/batch_votes.h",
     "include/bat/ledger/contribution_info.h",
     "include/bat/ledger/contribution_state.h",
+    "include/bat/ledger/current_reconcile.h",
     "include/bat/ledger/exchange_rate_info.h",
     "include/bat/ledger/exclude_filter.h",
     "include/bat/ledger/grant.h",
