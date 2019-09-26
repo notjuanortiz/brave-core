@@ -538,7 +538,7 @@ void RewardsServiceImpl::MaybeShowAddFundsNotification(
   // next 3 days and balance is too low.
   base::Time now = base::Time::Now();
   if (reconcile_stamp - now.ToDoubleT() <
-      3 * base::Time::kHoursPerDay * BASE_TIME_KSECONDSPERHOUR) {
+      3 * base::Time::kHoursPerDay * base::Time::kSecondsPerHour) {
     if (ShouldShowNotificationAddFunds()) {
       MaybeShowNotificationAddFunds();
     }
@@ -718,7 +718,7 @@ void RewardsServiceImpl::OnPostData(SessionID tab_id,
   url::RawCanonOutputW<1024> canonOutput;
   url::DecodeURLEscapeSequences(post_data.c_str(),
                                 post_data.length(),
-                                URL_DECODE_URL_MODE
+                                url::DecodeURLMode::kUTF8OrIsomorphic,
                                 &canonOutput);
   output = base::UTF16ToUTF8(base::StringPiece16(canonOutput.data(),
                                                  canonOutput.length()));
