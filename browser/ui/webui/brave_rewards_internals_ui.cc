@@ -18,8 +18,13 @@
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_message_handler.h"
 
+<<<<<<< HEAD
 #if !defined(OS_ANDROID)
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_internals_generated_map.h"
+=======
+#if defined(BRAVE_CHROMIUM_BUILD)
+#include "brave/components/brave_rewards/resources/grit/brave_rewards_generated_map.h"
+>>>>>>> Android Rewards panel UI
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #else
 #include "components/brave_rewards/settings/resources/grit/brave_rewards_settings_generated_map.h"
@@ -147,7 +152,7 @@ BraveRewardsInternalsUI::BraveRewardsInternalsUI(content::WebUI* web_ui,
                                                  const std::string& name)
     : BasicUI(web_ui,
               name,
-#if !defined(OS_ANDROID)
+#if defined(BRAVE_CHROMIUM_BUILD)
               kBraveRewardsInternalsGenerated,
               kBraveRewardsInternalsGeneratedSize,
 #else
