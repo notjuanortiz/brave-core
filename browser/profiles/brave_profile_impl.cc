@@ -14,9 +14,11 @@
 #include "extensions/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "chrome/browser/extensions/extension_service.h"
+#include "extensions/browser/extension_prefs.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_registry_observer.h"
-#include "extensions/browser/extension_prefs.h"
+#include "extensions/browser/extension_system.h"
 #endif
 
 class BASE_EXPORT Data {
@@ -102,10 +104,16 @@ BraveProfileImpl::BraveProfileImpl(
                                 content::Source<Profile>(parent_profile));
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-    if (!IsOffTheRecord()) {
-      observer_.reset(
-          new SessionProfileExtensionRegistryObserver(parent_profile, this));
-    }
+    // Listen to PROFILE_ADDED to block all extensions in session profiles.
+    notification_registrar_.Add(this,
+                                chrome::NOTIFICATION_PROFILE_ADDED,
+                                content::Source<Profile>(this));
+    // TODO(jocelyn): Remove above notification and set the registry observer
+    // when we solve the issues of sharing extensions with parent profiles.
+    // if (!IsOffTheRecord()) {
+    //   observer_.reset(
+    //     new SessionProfileExtensionRegistryObserver(parent_profile, this));
+    // }
 #endif
 
     base::PostTaskAndReply(
@@ -122,6 +130,17 @@ void BraveProfileImpl::Observe(
     const content::NotificationSource& source,
     const content::NotificationDetails& details) {
   switch (type) {
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+    case chrome::NOTIFICATION_PROFILE_ADDED: {
+      Profile* profile = content::Source<Profile>(source).ptr();
+      if (brave::IsSessionProfile(profile)) {
+        extensions::ExtensionService* extension_service =
+          extensions::ExtensionSystem::Get(profile)->extension_service();
+        extension_service->BlockAllExtensions();
+      }
+      break;
+    }
+#endif
     case chrome::NOTIFICATION_PROFILE_DESTROYED: {
       // this only happens when a profile is deleted because the profile manager
       // ensures that session profiles are destroyed before their parents
