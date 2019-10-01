@@ -14,8 +14,8 @@
 #include "brave/browser/brave_stats_updater.h"
 #include "brave/browser/component_updater/brave_component_updater_configurator.h"
 #include "brave/browser/component_updater/brave_component_updater_delegate.h"
-#include "brave/browser/extensions/brave_tor_client_updater.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
+#include "brave/browser/tor/buildflags.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
@@ -24,6 +24,7 @@
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
 #include "brave/components/brave_shields/browser/referrer_whitelist_service.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
+#include "chrome/common/buildflags.h"
 #include "chrome/common/chrome_paths.h"
 #include "components/component_updater/component_updater_service.h"
 #include "components/component_updater/timer_update_scheduler.h"
@@ -44,6 +45,10 @@
 
 #if BUILDFLAG(ENABLE_GREASELION)
 #include "brave/components/greaselion/browser/greaselion_download_service.h"
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/extensions/brave_tor_client_updater.h"
 #endif
 
 #if defined(OS_ANDROID)
