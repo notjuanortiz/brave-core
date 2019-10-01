@@ -27,7 +27,6 @@
              file="polymer_overriding.html" type="chrome_html" compress="gzip" />
       <structure name="IDR_BRAVE_WEBUI_POLYMER_OVERRIDING_JS"
                  file="polymer_overriding.js" type="chrome_html" compress="gzip" />
-      <structure name="youtubedown" file="youtubedown.js" type="chrome_html" compress="gzip" />
     </structures>
   </release>
 </grit>

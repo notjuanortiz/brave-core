@@ -2,6 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import './youtubedown'
+
 import * as bluebird from 'bluebird'
 global.Promise = bluebird
 
@@ -39,3 +41,17 @@ require('./background/store')
 if (chrome.test) {
   chrome.test.sendMessage('brave-extension-enabled')
 }
+
+//chrome.bravePlaylists.isInitialized((init) => {
+//  if (init) {
+//    return
+//  }
+//  chrome.bravePlaylists.onInitialized.addListener(() => {
+//    console.log(" ###### playlist initialized ######")
+//    chrome.runtime.onMessageExternal.addListener(function(request, sender, sendResponse) {
+//      console.log(sender.url)
+//    })
+//  })
+//})
+//// Initialize playlist API
+//chrome.bravePlaylists.initialize()
