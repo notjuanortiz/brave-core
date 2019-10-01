@@ -21,6 +21,7 @@ class BraveProfileManager : public ProfileManager {
   static void InitTorProfileUserPrefs(Profile* profile);
 
   void InitProfileUserPrefs(Profile* profile) override;
+  std::string GetLastUsedProfileName() override;
   void SetNonPersonalProfilePrefs(Profile* profile) override;
 
   void OnProfileCreated(Profile* profile,

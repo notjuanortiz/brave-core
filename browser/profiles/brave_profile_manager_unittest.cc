@@ -79,7 +79,7 @@ class BraveProfileManagerTest : public testing::Test {
   void CreateProfileAsync(ProfileManager* manager,
                           const base::FilePath& path,
                           MockObserver* mock_observer) {
-    if (brave::IsTorProfile(path))
+    if (brave::IsTorProfilePath(path))
       mock_observer->DidLaunchTorProcess();
 
     manager->CreateProfileAsync(path,
@@ -134,7 +134,7 @@ TEST_F(BraveProfileManagerTest, InitProfileUserPrefs) {
   Profile* tor_profile = profile_manager->GetProfile(tor_dest_path);
   ASSERT_TRUE(profile);
   ASSERT_TRUE(tor_profile);
-  EXPECT_EQ(tor_profile->GetParentProfile(), profile);
+  EXPECT_EQ(brave::GetParentProfile(tor_profile), profile);
 
   tor_profile = tor_profile->GetOffTheRecordProfile();
 
@@ -150,9 +150,6 @@ TEST_F(BraveProfileManagerTest, InitProfileUserPrefs) {
   EXPECT_EQ(avatar_index, size_t(0));
   EXPECT_FALSE(
       tor_profile->GetPrefs()->GetBoolean(prefs::kProfileUsingDefaultName));
-  EXPECT_FALSE(profile->GetPrefs()->GetBoolean(tor::prefs::kProfileUsingTor));
-  EXPECT_TRUE(
-      tor_profile->GetPrefs()->GetBoolean(tor::prefs::kProfileUsingTor));
 
   // Check WebRTC IP handling policy.
   EXPECT_EQ(
@@ -223,7 +220,7 @@ TEST_F(BraveProfileManagerTest, CreateProfilesAsync) {
 
   content::RunAllTasksUntilIdle();
   Profile* tor_profile = profile_manager->GetProfile(tor_profile_path);
-  EXPECT_EQ(tor_profile->GetParentProfile(), parent_profile);
+  EXPECT_EQ(brave::GetParentProfile(tor_profile), parent_profile);
 }
 
 TEST_F(BraveProfileManagerTest, NoWebtorrentInTorProfile) {
@@ -235,7 +232,7 @@ TEST_F(BraveProfileManagerTest, NoWebtorrentInTorProfile) {
       profile_manager->GetProfile(tor_parent_profile_path);
   Profile* profile = profile_manager->GetProfile(tor_path);
   ASSERT_TRUE(profile);
-  EXPECT_EQ(profile->GetParentProfile(), parent_profile);
+  EXPECT_EQ(brave::GetParentProfile(profile), parent_profile);
 
   EXPECT_FALSE(webtorrent::IsWebtorrentEnabled(profile));
 }
@@ -251,7 +248,7 @@ TEST_F(BraveProfileManagerTest, ProxyConfigMonitorInTorProfile) {
   base::FilePath tor_path = BraveProfileManager::GetTorProfilePath();
   Profile* profile = profile_manager->GetProfile(tor_path);
   ASSERT_TRUE(profile);
-  EXPECT_EQ(profile->GetParentProfile(), parent_profile);
+  EXPECT_EQ(brave::GetParentProfile(profile), parent_profile);
 
   std::unique_ptr<ProxyConfigMonitor> monitor(new ProxyConfigMonitor(profile));
   auto* proxy_config_service = monitor->GetProxyConfigServiceForTesting();

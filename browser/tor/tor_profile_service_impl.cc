@@ -121,6 +121,12 @@ void OnNewTorCircuit(std::unique_ptr<NewTorCircuitTracker> tracker,
 TorProfileServiceImpl::TorProfileServiceImpl(Profile* profile)
     : profile_(profile),
       weak_ptr_factory_(this) {
+  // Return early since g_brave_browser_process and tor_client_updater are not
+  // available in unit tests.
+  if (profile_->AsTestingProfile()) {
+    return;
+  }
+
   g_brave_browser_process->tor_client_updater()->AddObserver(this);
   OnExecutableReady(GetTorExecutablePath());
 }
@@ -135,11 +141,11 @@ void TorProfileServiceImpl::OnExecutableReady(const base::FilePath& path) {
     return;
 
   g_brave_browser_process->tor_client_updater()->RemoveObserver(this);
+
   tor_launcher_factory_ = TorLauncherFactory::GetInstance();
   tor_launcher_factory_->AddObserver(this);
 
   if (tor_launcher_factory_->GetTorPid() < 0) {
-    LOG(ERROR) << "launch tor";
     LaunchTor();
   }
 }

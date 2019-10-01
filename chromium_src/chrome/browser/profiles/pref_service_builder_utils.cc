@@ -19,10 +19,6 @@
 #include "chrome/common/pref_names.h"
 #include "components/spellcheck/browser/pref_names.h"
 
-#if BUILDFLAG(ENABLE_TOR)
-#include "brave/browser/tor/tor_profile_service.h"
-#endif
-
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "extensions/browser/extension_pref_store.h"
 #include "extensions/browser/extension_pref_value_map_factory.h"
@@ -43,10 +39,6 @@ void RegisterProfilePrefs(bool is_signin_profile,
   // appearance
 #if !defined(OS_ANDROID)
   BraveThemeService::RegisterProfilePrefs(registry);
-#endif
-
-#if BUILDFLAG(ENABLE_TOR)
-  tor::TorProfileService::RegisterProfilePrefs(registry);
 #endif
 
   brave_rewards::RewardsService::RegisterProfilePrefs(registry);

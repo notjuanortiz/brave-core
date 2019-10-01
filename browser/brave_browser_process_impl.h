@@ -90,7 +90,6 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
 
  private:
   void CreateProfileManager();
-  void CreateBackgroundModeManager();
 
   BraveComponent::Delegate* brave_component_updater_delegate();
 

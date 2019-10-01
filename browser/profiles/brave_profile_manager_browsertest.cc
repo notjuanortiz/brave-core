@@ -7,6 +7,8 @@
 
 #include "base/path_service.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/extensions/brave_tor_client_updater.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/tor/buildflags.h"
 #include "brave/common/brave_paths.h"
@@ -99,6 +101,12 @@ Profile* SwitchToTorProfile() {
 
 class BraveProfileManagerTest : public InProcessBrowserTest {
  public:
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
+    g_brave_browser_process->tor_client_updater()->SetExecutablePath(
+        base::FilePath("test"));
+  }
+
   void SetScriptSetting(HostContentSettingsMap* content_settings,
       const ContentSettingsPattern& primary_pattern,
       ContentSetting setting) {
@@ -200,7 +208,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
   Profile* tor_profile = SwitchToTorProfile();
   ASSERT_TRUE(brave::IsTorProfile(tor_profile));
   EXPECT_TRUE(tor_profile->IsOffTheRecord());
-  EXPECT_EQ(tor_profile->GetParentProfile(), parent_profile);
+  EXPECT_EQ(brave::GetParentProfile(tor_profile), parent_profile);
 
   // Check if the same node is in Tor profile since we share the bookmark
   // service between Tor profile and its parent profile.
@@ -232,6 +240,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
 IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
     SwitchToTorProfileInheritPrefs) {
   ScopedTorLaunchPreventerForTest prevent_tor_process;
+
   ProfileManager* profile_manager = g_browser_process->profile_manager();
   ASSERT_TRUE(profile_manager);
   Profile* parent_profile = ProfileManager::GetActiveUserProfile();
@@ -244,7 +253,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
   Profile* tor_profile = SwitchToTorProfile();
   ASSERT_TRUE(brave::IsTorProfile(tor_profile));
   EXPECT_TRUE(tor_profile->IsOffTheRecord());
-  EXPECT_EQ(tor_profile->GetParentProfile(), parent_profile);
+  EXPECT_EQ(brave::GetParentProfile(tor_profile), parent_profile);
 
   // Check if ShowBookmarkBar preference is the same as Tor's parent profile.
   PrefService* tor_prefs = tor_profile->GetPrefs();
@@ -272,7 +281,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
   Profile* tor_profile = SwitchToTorProfile();
   ASSERT_TRUE(brave::IsTorProfile(tor_profile));
   EXPECT_TRUE(tor_profile->IsOffTheRecord());
-  EXPECT_EQ(tor_profile->GetParentProfile(), parent_profile);
+  EXPECT_EQ(brave::GetParentProfile(tor_profile), parent_profile);
 
   // Check Tor profile's content settings are inherited from its parent.
   HostContentSettingsMap* tor_content_settings =
@@ -327,7 +336,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerExtensionTest,
   Profile* tor_profile = SwitchToTorProfile();
   ASSERT_TRUE(brave::IsTorProfile(tor_profile));
   EXPECT_TRUE(tor_profile->IsOffTheRecord());
-  EXPECT_EQ(tor_profile->GetParentProfile(), parent_profile);
+  EXPECT_EQ(brave::GetParentProfile(tor_profile), parent_profile);
 
   // Extension should be disabled in Tor by default.
   EXPECT_FALSE(extensions::util::IsIncognitoEnabled(id, tor_profile));

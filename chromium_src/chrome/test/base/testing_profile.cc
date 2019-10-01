@@ -4,4 +4,11 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/profiles/profile_util.h"
+
+#define BRAVE_INIT \
+  if (brave::IsSessionProfilePath(GetPath())) { \
+    brave::CreateParentProfileData(this); \
+  } else
+
 #include "../../../../../chrome/test/base/testing_profile.cc"
+#undef BRAVE_INIT

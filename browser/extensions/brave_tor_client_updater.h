@@ -15,6 +15,7 @@
 #include "base/sequenced_task_runner.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 
+class BraveProfileManagerTest;
 class BraveTorClientUpdaterTest;
 
 using brave_component_updater::BraveComponent;
@@ -63,6 +64,7 @@ class BraveTorClientUpdater : public BraveComponent {
       const std::string& manifest) override;
 
  private:
+  friend class ::BraveProfileManagerTest;
   friend class ::BraveTorClientUpdaterTest;
   static std::string g_tor_client_component_name_;
   static std::string g_tor_client_component_id_;
@@ -71,7 +73,7 @@ class BraveTorClientUpdater : public BraveComponent {
       const std::string& component_id,
       const std::string& component_base64_public_key);
   void SetExecutablePath(const base::FilePath& path);
-  // base::FilePath InitExecutablePath(const base::FilePath& install_dir);
+
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   bool registered_;
   base::FilePath executable_path_;

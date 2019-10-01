@@ -82,7 +82,6 @@ void BraveProfileManager::InitTorProfileUserPrefs(Profile* profile) {
   pref_service
     ->SetString(prefs::kProfileName,
                 l10n_util::GetStringUTF8(IDS_PROFILES_TOR_PROFILE_NAME));
-  pref_service->SetBoolean(tor::prefs::kProfileUsingTor, true);
   pref_service->SetString(prefs::kWebRTCIPHandlingPolicy,
                           content::kWebRTCIPHandlingDisableNonProxiedUdp);
   pref_service->SetBoolean(prefs::kSafeBrowsingEnabled, false);
@@ -104,6 +103,17 @@ void BraveProfileManager::InitProfileUserPrefs(Profile* profile) {
   } else {
     ProfileManager::InitProfileUserPrefs(profile);
   }
+}
+
+std::string BraveProfileManager::GetLastUsedProfileName() {
+  PrefService* local_state = g_browser_process->local_state();
+  DCHECK(local_state);
+  const std::string last_used_profile_name =
+    local_state->GetString(prefs::kProfileLastUsed);
+  if (last_used_profile_name ==
+      base::FilePath(tor::kTorProfileDir).AsUTF8Unsafe())
+    return chrome::kInitialProfile;
+  return ProfileManager::GetLastUsedProfileName();
 }
 
 void BraveProfileManager::DoFinalInitForServices(Profile* profile,

@@ -58,6 +58,7 @@ class ParentProfileData : public base::SupportsUserData::Data {
   ParentProfileData(Profile* profile);
 
   Profile* profile_;
+  base::FilePath path_;
 
   DISALLOW_COPY_AND_ASSIGN(ParentProfileData);
 };
@@ -67,23 +68,23 @@ const void* const ParentProfileData::kUserDataKey = &kUserDataKey;
 // static
 void ParentProfileData::CreateForProfile(content::BrowserContext* context) {
   DCHECK(context);
-  if (!FromProfile(context)) {
-    auto* profile = Profile::FromBrowserContext(context);
-    auto* profile_manager = g_browser_process->profile_manager();
-    DCHECK(profile_manager);
+  if (FromProfile(context)) return;
 
-    auto* parent_profile =
-        profile_manager->GetProfileByPath(GetParentProfilePath(profile));
-    DCHECK(parent_profile);
-    DCHECK(parent_profile != profile);
+  auto* profile = Profile::FromBrowserContext(context);
+  auto* profile_manager = g_browser_process->profile_manager();
+  DCHECK(profile_manager);
 
-    profile->SetUserData(
-        UserDataKey(),
-        base::WrapUnique(new ParentProfileData(parent_profile)));
+  auto* parent_profile =
+    profile_manager->GetProfileByPath(GetParentProfilePath(profile));
+  DCHECK(parent_profile);
+  DCHECK(parent_profile != profile);
 
-    GetPathMap()->insert(
-        std::pair<const base::FilePath, Profile*>(profile->GetPath(), profile));
-  }
+  profile->SetUserData(
+      UserDataKey(),
+      base::WrapUnique(new ParentProfileData(parent_profile)));
+
+  GetPathMap()->insert(
+      std::pair<const base::FilePath, Profile*>(profile->GetPath(), profile));
 }
 
 // static
@@ -127,11 +128,12 @@ const void* ParentProfileData::UserDataKey() {
 }
 
 ParentProfileData::ParentProfileData(Profile* profile)
-      : profile_(profile) {
+    : profile_(profile),
+      path_(profile->GetPath()) {
 }
 
 ParentProfileData::~ParentProfileData() {
-  GetPathMap()->erase(profile_->GetPath());
+  GetPathMap()->erase(path_);
 }
 
 }  // namespace
