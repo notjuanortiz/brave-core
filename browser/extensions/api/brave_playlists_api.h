@@ -23,8 +23,7 @@ class BravePlaylistsCreatePlaylistFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BravePlaylistsIsInitializedFunction
-    : public UIThreadExtensionFunction {
+class BravePlaylistsIsInitializedFunction : public UIThreadExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("bravePlaylists.isInitialized", UNKNOWN)
 
@@ -35,8 +34,7 @@ class BravePlaylistsIsInitializedFunction
   ResponseAction Run() override;
 };
 
-class BravePlaylistsInitializeFunction
-    : public UIThreadExtensionFunction {
+class BravePlaylistsInitializeFunction : public UIThreadExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("bravePlaylists.initialize", UNKNOWN)
 
@@ -110,6 +108,17 @@ class BravePlaylistsDeleteAllPlaylistsFunction
 
  private:
   void OnDeleteAllPlaylists(bool deleted);
+};
+
+class BravePlaylistsRequestDownloadFunction : public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("bravePlaylists.requestDownload", UNKNOWN)
+
+ protected:
+  ~BravePlaylistsRequestDownloadFunction() override {}
+
+  // ExtensionFunction:
+  ResponseAction Run() override;
 };
 
 }  // namespace api

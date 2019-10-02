@@ -43,6 +43,7 @@ class PlaylistsService : public KeyedService,
   // PlaylistsControllerObserver overrides:
   void OnPlaylistsInitialized(bool initialized) override;
   void OnPlaylistsChanged(const PlaylistsChangeParams& params) override;
+  void OnPlaylistsDownloadRequested(const std::string& url) override;
 
   base::SequencedTaskRunner* file_task_runner();
 

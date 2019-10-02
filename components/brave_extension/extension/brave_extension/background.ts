@@ -42,16 +42,16 @@ if (chrome.test) {
   chrome.test.sendMessage('brave-extension-enabled')
 }
 
-//chrome.bravePlaylists.isInitialized((init) => {
-//  if (init) {
-//    return
-//  }
-//  chrome.bravePlaylists.onInitialized.addListener(() => {
-//    console.log(" ###### playlist initialized ######")
-//    chrome.runtime.onMessageExternal.addListener(function(request, sender, sendResponse) {
-//      console.log(sender.url)
-//    })
-//  })
-//})
-//// Initialize playlist API
-//chrome.bravePlaylists.initialize()
+chrome.bravePlaylists.isInitialized((init) => {
+  if (init) {
+    return
+  }
+  chrome.bravePlaylists.onInitialized.addListener(() => {
+    console.log(" ###### playlist initialized ######")
+    chrome.bravePlaylists.onDownloadRequested.addListener((url) => {
+      console.log(" ##### download requested: " + url + " #####")
+    })
+  })
+})
+// Initialize playlist API
+chrome.bravePlaylists.initialize()

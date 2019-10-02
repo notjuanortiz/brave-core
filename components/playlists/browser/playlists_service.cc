@@ -32,13 +32,11 @@ PlaylistsService::PlaylistsService(content::BrowserContext* context)
   observer_.Add(controller_.get());
 }
 
-PlaylistsService::~PlaylistsService() {
-}
+PlaylistsService::~PlaylistsService() {}
 
 bool PlaylistsService::Init() {
   return base::PostTaskAndReplyWithResult(
-      file_task_runner(),
-      FROM_HERE,
+      file_task_runner(), FROM_HERE,
       base::BindOnce(&base::CreateDirectory, base_dir_),
       base::BindOnce(&PlaylistsService::OnBaseDirectoryReady,
                      weak_factory_.GetWeakPtr()));
@@ -67,8 +65,7 @@ void PlaylistsService::OnPlaylistsInitialized(bool initialized) {
   extensions::EventRouter::Get(context_)->BroadcastEvent(std::move(event));
 }
 
-void PlaylistsService::OnPlaylistsChanged(
-    const PlaylistsChangeParams& params) {
+void PlaylistsService::OnPlaylistsChanged(const PlaylistsChangeParams& params) {
   auto event = std::make_unique<extensions::Event>(
       extensions::events::BRAVE_PLAYLISTS_ON_PLAYLISTS_CHANGED,
       extensions::api::brave_playlists::OnPlaylistsChanged::kEventName,
@@ -81,12 +78,22 @@ void PlaylistsService::OnPlaylistsChanged(
   extensions::EventRouter::Get(context_)->BroadcastEvent(std::move(event));
 }
 
+void PlaylistsService::OnPlaylistsDownloadRequested(const std::string& url) {
+  LOG(INFO) << "entering OnPlaylistsDownloadRequested";
+  auto event = std::make_unique<extensions::Event>(
+      extensions::events::BRAVE_PLAYLISTS_ON_DOWNLOAD_REQUESTED,
+      extensions::api::brave_playlists::OnDownloadRequested::kEventName,
+      extensions::api::brave_playlists::OnDownloadRequested::Create(url),
+      context_);
+
+  extensions::EventRouter::Get(context_)->BroadcastEvent(std::move(event));
+}
+
 base::SequencedTaskRunner* PlaylistsService::file_task_runner() {
   if (!file_task_runner_) {
     file_task_runner_ = base::CreateSequencedTaskRunnerWithTraits(
-                            { base::MayBlock(),
-                              base::TaskPriority::BEST_EFFORT,
-                              base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN });
+        {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
+         base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
   }
   return file_task_runner_.get();
 }

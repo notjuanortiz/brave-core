@@ -94,7 +94,7 @@ base::Value GetValueFromPlaylistInfo(const PlaylistInfo& info) {
   playlist_value.SetKey(kPlaylistsTitlesKey,
                         GetTitleValueFromCreateParams(info.create_params));
   playlist_value.SetKey(kPlaylistsCreateParamsKey,
-                         GetValueFromCreateParams(info.create_params));
+                        GetValueFromCreateParams(info.create_params));
   return playlist_value;
 }
 
@@ -172,10 +172,9 @@ std::vector<base::FilePath> GetOrphanedPaths(
 PlaylistsController::PlaylistsController(content::BrowserContext* context)
     : context_(context),
       url_loader_factory_(
-          content::BrowserContext::GetDefaultStoragePartition(context)->
-              GetURLLoaderFactoryForBrowserProcess()),
-      weak_factory_(this) {
-}
+          content::BrowserContext::GetDefaultStoragePartition(context)
+              ->GetURLLoaderFactoryForBrowserProcess()),
+      weak_factory_(this) {}
 
 PlaylistsController::~PlaylistsController() {
   io_task_runner()->DeleteSoon(FROM_HERE, std::move(db_controller_));
@@ -193,8 +192,7 @@ bool PlaylistsController::Init(const base::FilePath& base_dir) {
       new PlaylistsMediaFileController(this, context_));
 
   return base::PostTaskAndReplyWithResult(
-      io_task_runner(),
-      FROM_HERE,
+      io_task_runner(), FROM_HERE,
       base::BindOnce(&PlaylistsDBController::Init,
                      base::Unretained(db_controller_.get())),
       base::BindOnce(&PlaylistsController::OnDBInitialized,
@@ -230,25 +228,22 @@ void PlaylistsController::DownloadThumbnail(base::Value&& playlist_value) {
   request->url = GURL(*thumbnail_url);
   request->allow_credentials = false;
   auto loader = network::SimpleURLLoader::Create(
-      std::move(request),
-      GetNetworkTrafficAnnotationTagForURLLoad());
+      std::move(request), GetNetworkTrafficAnnotationTagForURLLoad());
   loader->SetRetryOptions(
       kRetriesCountOnNetworkChange,
       network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
 
-  auto iter = url_loaders_.insert(url_loaders_.begin(),
-                                  std::move(loader));
+  auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(loader));
 
   const std::string playlist_id =
       *playlist_value.FindStringKey(kPlaylistsIDKey);
   base::FilePath thumbnail_path =
-      base_dir_.Append(GetPlaylistIDDirName(playlist_id)).
-          Append(kThumbnailFileName);
+      base_dir_.Append(GetPlaylistIDDirName(playlist_id))
+          .Append(kThumbnailFileName);
   iter->get()->DownloadToFile(
       url_loader_factory_.get(),
       base::BindOnce(&PlaylistsController::OnThumbnailDownloaded,
-                     base::Unretained(this),
-                     std::move(playlist_value),
+                     base::Unretained(this), std::move(playlist_value),
                      std::move(iter)),
       thumbnail_path);
 }
@@ -273,8 +268,8 @@ void PlaylistsController::OnThumbnailDownloaded(
             << ": thumbnail fetching failed. goto media file generation step";
 
     NotifyPlaylistChanged(
-        { PlaylistsChangeParams::ChangeType::CHANGE_TYPE_THUMBNAIL_FAILED,
-          playlist_id });
+        {PlaylistsChangeParams::ChangeType::CHANGE_TYPE_THUMBNAIL_FAILED,
+         playlist_id});
 
     MoveToMediaFileGenerationStep(std::move(playlist_value));
     return;
@@ -298,15 +293,11 @@ void PlaylistsController::PutThumbnailReadyPlaylistToDB(
     const std::string& json_value,
     base::Value&& playlist_value) {
   base::PostTaskAndReplyWithResult(
-      io_task_runner(),
-      FROM_HERE,
+      io_task_runner(), FROM_HERE,
       base::BindOnce(&PlaylistsDBController::Put,
-                     base::Unretained(db_controller_.get()),
-                     key,
-                     json_value),
+                     base::Unretained(db_controller_.get()), key, json_value),
       base::BindOnce(&PlaylistsController::OnPutThumbnailReadyPlaylist,
-                     weak_factory_.GetWeakPtr(),
-                     std::move(playlist_value)));
+                     weak_factory_.GetWeakPtr(), std::move(playlist_value)));
 }
 
 void PlaylistsController::OnPutThumbnailReadyPlaylist(
@@ -316,14 +307,13 @@ void PlaylistsController::OnPutThumbnailReadyPlaylist(
       *playlist_value.FindStringKey(kPlaylistsIDKey);
   if (!result) {
     NotifyPlaylistChanged(
-      { PlaylistsChangeParams::ChangeType::CHANGE_TYPE_ABORTED,
-        playlist_id });
+        {PlaylistsChangeParams::ChangeType::CHANGE_TYPE_ABORTED, playlist_id});
     return;
   }
 
   NotifyPlaylistChanged(
-      { PlaylistsChangeParams::ChangeType::CHANGE_TYPE_THUMBNAIL_READY,
-        playlist_id });
+      {PlaylistsChangeParams::ChangeType::CHANGE_TYPE_THUMBNAIL_READY,
+       playlist_id});
 
   MoveToMediaFileGenerationStep(std::move(playlist_value));
 }
@@ -337,7 +327,7 @@ void PlaylistsController::MoveToMediaFileGenerationStep(
   // If |media_file_controller_| is generating other playlist media file,
   // next playlist generation will be triggered when current one is finished.
   if (!media_file_controller_->in_progress())
-     GenerateMediaFile();
+    GenerateMediaFile();
 }
 
 void PlaylistsController::GenerateMediaFile() {
@@ -347,7 +337,7 @@ void PlaylistsController::GenerateMediaFile() {
   base::Value value(std::move(pending_media_file_creation_jobs_.front()));
   pending_media_file_creation_jobs_.pop();
   VLOG(2) << __func__ << ": "
-                      << *value.FindStringKey(kPlaylistsPlaylistNameKey);
+          << *value.FindStringKey(kPlaylistsPlaylistNameKey);
 
   media_file_controller_->GenerateSingleMediaFile(std::move(value), base_dir_);
 }
@@ -371,15 +361,11 @@ void PlaylistsController::PutInitialPlaylistToDB(const std::string& key,
                                                  const std::string& json_value,
                                                  base::Value&& playlist_value) {
   base::PostTaskAndReplyWithResult(
-      io_task_runner(),
-      FROM_HERE,
+      io_task_runner(), FROM_HERE,
       base::BindOnce(&PlaylistsDBController::Put,
-                     base::Unretained(db_controller_.get()),
-                     key,
-                     json_value),
+                     base::Unretained(db_controller_.get()), key, json_value),
       base::BindOnce(&PlaylistsController::OnPutInitialPlaylist,
-                     weak_factory_.GetWeakPtr(),
-                     std::move(playlist_value)));
+                     weak_factory_.GetWeakPtr(), std::move(playlist_value)));
 }
 
 void PlaylistsController::OnPutInitialPlaylist(base::Value&& playlist_value,
@@ -388,23 +374,20 @@ void PlaylistsController::OnPutInitialPlaylist(base::Value&& playlist_value,
       *playlist_value.FindStringKey(kPlaylistsIDKey);
   if (!result) {
     NotifyPlaylistChanged(
-      { PlaylistsChangeParams::ChangeType::CHANGE_TYPE_ABORTED,
-        playlist_id });
+        {PlaylistsChangeParams::ChangeType::CHANGE_TYPE_ABORTED, playlist_id});
     return;
   }
 
-  NotifyPlaylistChanged({ PlaylistsChangeParams::ChangeType::CHANGE_TYPE_ADDED,
-                          playlist_id });
+  NotifyPlaylistChanged(
+      {PlaylistsChangeParams::ChangeType::CHANGE_TYPE_ADDED, playlist_id});
 
   const base::FilePath playlist_dir =
       base_dir_.Append(GetPlaylistIDDirName(playlist_id));
   base::PostTaskAndReplyWithResult(
-      io_task_runner(),
-      FROM_HERE,
+      io_task_runner(), FROM_HERE,
       base::BindOnce(&base::CreateDirectory, playlist_dir),
       base::BindOnce(&PlaylistsController::OnPlaylistDirCreated,
-                     weak_factory_.GetWeakPtr(),
-                     std::move(playlist_value)));
+                     weak_factory_.GetWeakPtr(), std::move(playlist_value)));
 }
 
 void PlaylistsController::OnPlaylistDirCreated(base::Value&& playlist_value,
@@ -414,8 +397,7 @@ void PlaylistsController::OnPlaylistDirCreated(base::Value&& playlist_value,
     const std::string playlist_id =
         *playlist_value.FindStringKey(kPlaylistsIDKey);
     NotifyPlaylistChanged(
-      { PlaylistsChangeParams::ChangeType::CHANGE_TYPE_ABORTED,
-        playlist_id });
+        {PlaylistsChangeParams::ChangeType::CHANGE_TYPE_ABORTED, playlist_id});
     return;
   }
 
@@ -424,7 +406,8 @@ void PlaylistsController::OnPlaylistDirCreated(base::Value&& playlist_value,
   if (thumbnail_url && !thumbnail_url->empty()) {
     DownloadThumbnail(std::move(playlist_value));
   } else {
-    VLOG(2) << __func__ << ": " << "thumbnail url is not available."
+    VLOG(2) << __func__ << ": "
+            << "thumbnail url is not available."
             << " goes to media file generation step";
     MoveToMediaFileGenerationStep(std::move(playlist_value));
   }
@@ -434,13 +417,11 @@ bool PlaylistsController::GetAllPlaylists(
     base::OnceCallback<void(base::Value)> callback) {
   DCHECK(initialized_);
   return base::PostTaskAndReplyWithResult(
-      io_task_runner(),
-      FROM_HERE,
+      io_task_runner(), FROM_HERE,
       base::BindOnce(&PlaylistsDBController::GetAll,
                      base::Unretained(db_controller_.get())),
       base::BindOnce(&PlaylistsController::OnGetAllPlaylists,
-                     weak_factory_.GetWeakPtr(),
-                     std::move(callback)));
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void PlaylistsController::OnGetAllPlaylists(
@@ -463,14 +444,11 @@ bool PlaylistsController::GetPlaylist(
   DCHECK(initialized_);
 
   return base::PostTaskAndReplyWithResult(
-      io_task_runner(),
-      FROM_HERE,
+      io_task_runner(), FROM_HERE,
       base::BindOnce(&PlaylistsDBController::Get,
-                     base::Unretained(db_controller_.get()),
-                     id),
+                     base::Unretained(db_controller_.get()), id),
       base::BindOnce(&PlaylistsController::OnGetPlaylist,
-                     weak_factory_.GetWeakPtr(),
-                     std::move(callback)));
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void PlaylistsController::DoRecoverPlaylist(
@@ -479,7 +457,8 @@ void PlaylistsController::DoRecoverPlaylist(
   base::Optional<base::Value> playlist_info =
       base::JSONReader::Read(playlist_info_json);
   if (!playlist_info) {
-    VLOG(1) << __func__ << ": " << "Invalid playlist id for recover: " << id;
+    VLOG(1) << __func__ << ": "
+            << "Invalid playlist id for recover: " << id;
     return;
   }
 
@@ -488,35 +467,35 @@ void PlaylistsController::DoRecoverPlaylist(
   const bool has_thumbnail =
       !!thumbnail_path_str && !thumbnail_path_str->empty();
   if (has_thumbnail) {
-    VLOG(2) << __func__ << ": " << "Already has thumbnail."
-                                << " This is in recovering";
+    VLOG(2) << __func__ << ": "
+            << "Already has thumbnail."
+            << " This is in recovering";
     base::Optional<bool> partial_ready =
         playlist_info->FindBoolPath(kPlaylistsPartialReadyKey);
     const std::string* media_file_path =
         playlist_info->FindStringPath(kPlaylistsMediaFilePathKey);
     // Only try to regenerate if partial ready or there is no media file.
     if (media_file_path->empty() || *partial_ready) {
-      VLOG(2) << __func__ << ": " << "Regenerate media file";
+      VLOG(2) << __func__ << ": "
+              << "Regenerate media file";
       MoveToMediaFileGenerationStep(std::move(*playlist_info));
     }
     return;
   }
 
-  VLOG(2) << __func__ << ": " << "Try to download thumbnail";
+  VLOG(2) << __func__ << ": "
+          << "Try to download thumbnail";
   DownloadThumbnail(std::move(*playlist_info));
 }
 
 bool PlaylistsController::RecoverPlaylist(const std::string& id) {
   DCHECK(initialized_);
   return base::PostTaskAndReplyWithResult(
-      io_task_runner(),
-      FROM_HERE,
+      io_task_runner(), FROM_HERE,
       base::BindOnce(&PlaylistsDBController::Get,
-                     base::Unretained(db_controller_.get()),
-                     id),
+                     base::Unretained(db_controller_.get()), id),
       base::BindOnce(&PlaylistsController::DoRecoverPlaylist,
-                     weak_factory_.GetWeakPtr(),
-                     id));
+                     weak_factory_.GetWeakPtr(), id));
 }
 
 void PlaylistsController::OnGetPlaylist(
@@ -533,14 +512,27 @@ bool PlaylistsController::DeletePlaylist(const std::string& id) {
     media_file_controller_->RequestCancelCurrentPlaylistGeneration();
 
   return base::PostTaskAndReplyWithResult(
-      io_task_runner(),
-      FROM_HERE,
+      io_task_runner(), FROM_HERE,
       base::BindOnce(&PlaylistsDBController::Del,
-                     base::Unretained(db_controller_.get()),
-                     id),
+                     base::Unretained(db_controller_.get()), id),
       base::BindOnce(&PlaylistsController::OnDeletePlaylist,
-                     weak_factory_.GetWeakPtr(),
-                     id));
+                     weak_factory_.GetWeakPtr(), id));
+}
+
+bool PlaylistsController::RequestDownload(const std::string& url) {
+  DCHECK(initialized_);
+
+  // This is handled by third-party code (in JavaScript) so all we do here is
+  // tell observers that a download was requested and trust that someone is
+  // listening who will handle it.
+  return io_task_runner()->PostTask(
+      FROM_HERE, base::BindOnce(&PlaylistsController::OnRequestDownload,
+                                weak_factory_.GetWeakPtr(), url));
+}
+
+void PlaylistsController::OnRequestDownload(const std::string& url) {
+  for (PlaylistsControllerObserver& obs : observers_)
+    obs.OnPlaylistsDownloadRequested(url);
 }
 
 void PlaylistsController::OnDeletePlaylist(const std::string& playlist_id,
@@ -549,8 +541,7 @@ void PlaylistsController::OnDeletePlaylist(const std::string& playlist_id,
     return;
 
   NotifyPlaylistChanged(
-      { PlaylistsChangeParams::ChangeType::CHANGE_TYPE_DELETED,
-        playlist_id });
+      {PlaylistsChangeParams::ChangeType::CHANGE_TYPE_DELETED, playlist_id});
 
   // Delete assets from filesystem after updating db.
   media_file_controller_->DeletePlaylist(
@@ -573,13 +564,11 @@ bool PlaylistsController::DeleteAllPlaylists(
   initialization_in_progress_ = true;
 
   return base::PostTaskAndReplyWithResult(
-      io_task_runner(),
-      FROM_HERE,
+      io_task_runner(), FROM_HERE,
       base::BindOnce(&PlaylistsDBController::DeleteAll,
                      base::Unretained(db_controller_.get())),
       base::BindOnce(&PlaylistsController::OnDeleteAllPlaylists,
-                     weak_factory_.GetWeakPtr(),
-                     std::move(callback)));
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void PlaylistsController::OnDeleteAllPlaylists(
@@ -592,8 +581,7 @@ void PlaylistsController::OnDeleteAllPlaylists(
   if (deleted) {
     CleanUp();
     NotifyPlaylistChanged(
-      { PlaylistsChangeParams::ChangeType::CHANGE_TYPE_ALL_DELETED,
-        "" });
+        {PlaylistsChangeParams::ChangeType::CHANGE_TYPE_ALL_DELETED, ""});
   }
 }
 
@@ -609,16 +597,16 @@ void PlaylistsController::RemoveObserver(
 void PlaylistsController::OnMediaFileReady(base::Value&& playlist_value,
                                            bool partial) {
   VLOG(2) << __func__ << ": "
-          << *playlist_value.FindStringKey(kPlaylistsPlaylistNameKey)
-          << " " << partial;
+          << *playlist_value.FindStringKey(kPlaylistsPlaylistNameKey) << " "
+          << partial;
 
   std::string output;
   base::JSONWriter::Write(playlist_value, &output);
   const std::string playlist_id =
       *playlist_value.FindStringKey(kPlaylistsIDKey);
 
-  PutPlayReadyPlaylistToDB(
-      playlist_id, output, partial, std::move(playlist_value));
+  PutPlayReadyPlaylistToDB(playlist_id, output, partial,
+                           std::move(playlist_value));
 
   if (!pending_media_file_creation_jobs_.empty())
     GenerateMediaFile();
@@ -629,9 +617,8 @@ void PlaylistsController::OnMediaFileGenerationFailed(
   VLOG(2) << __func__ << ": "
           << *playlist_value.FindStringKey(kPlaylistsPlaylistNameKey);
 
-  NotifyPlaylistChanged(
-      { PlaylistsChangeParams::ChangeType::CHANGE_TYPE_ABORTED,
-        *playlist_value.FindStringKey(kPlaylistsIDKey) });
+  NotifyPlaylistChanged({PlaylistsChangeParams::ChangeType::CHANGE_TYPE_ABORTED,
+                         *playlist_value.FindStringKey(kPlaylistsIDKey)});
 
   if (!pending_media_file_creation_jobs_.empty())
     GenerateMediaFile();
@@ -643,15 +630,11 @@ void PlaylistsController::PutPlayReadyPlaylistToDB(
     bool partial,
     base::Value&& playlist_value) {
   base::PostTaskAndReplyWithResult(
-      io_task_runner(),
-      FROM_HERE,
+      io_task_runner(), FROM_HERE,
       base::BindOnce(&PlaylistsDBController::Put,
-                     base::Unretained(db_controller_.get()),
-                     key,
-                     json_value),
+                     base::Unretained(db_controller_.get()), key, json_value),
       base::BindOnce(&PlaylistsController::OnPutPlayReadyPlaylist,
-                     weak_factory_.GetWeakPtr(),
-                     std::move(playlist_value),
+                     weak_factory_.GetWeakPtr(), std::move(playlist_value),
                      partial));
 }
 
@@ -662,16 +645,17 @@ void PlaylistsController::OnPutPlayReadyPlaylist(base::Value&& playlist_value,
     return;
 
   NotifyPlaylistChanged(
-      { partial ?
-            PlaylistsChangeParams::ChangeType::CHANGE_TYPE_PLAY_READY_PARTIAL :
-            PlaylistsChangeParams::ChangeType::CHANGE_TYPE_PLAY_READY,
-        *playlist_value.FindStringKey(kPlaylistsIDKey) });
+      {partial
+           ? PlaylistsChangeParams::ChangeType::CHANGE_TYPE_PLAY_READY_PARTIAL
+           : PlaylistsChangeParams::ChangeType::CHANGE_TYPE_PLAY_READY,
+       *playlist_value.FindStringKey(kPlaylistsIDKey)});
 }
 
 void PlaylistsController::OnGetAllPlaylistsForCleanUp(base::Value playlists) {
   base::flat_set<std::string> ids;
   if (playlists.is_none()) {
-    VLOG(2) << __func__ << ": " << "Empty playlists";
+    VLOG(2) << __func__ << ": "
+            << "Empty playlists";
   } else {
     for (const auto& item : playlists.GetList()) {
       ids.insert(*item.FindStringKey(kPlaylistsIDKey));
@@ -679,8 +663,7 @@ void PlaylistsController::OnGetAllPlaylistsForCleanUp(base::Value playlists) {
   }
 
   base::PostTaskAndReplyWithResult(
-      io_task_runner(),
-      FROM_HERE,
+      io_task_runner(), FROM_HERE,
       base::BindOnce(&GetOrphanedPaths, base_dir_, ids),
       base::BindOnce(&PlaylistsController::OnGetOrphanedPaths,
                      weak_factory_.GetWeakPtr()));
@@ -689,7 +672,8 @@ void PlaylistsController::OnGetAllPlaylistsForCleanUp(base::Value playlists) {
 void PlaylistsController::OnGetOrphanedPaths(
     const std::vector<base::FilePath> orphaned_paths) {
   if (orphaned_paths.empty()) {
-    VLOG(2) << __func__ << ": " << "No orphaned playlist";
+    VLOG(2) << __func__ << ": "
+            << "No orphaned playlist";
     return;
   }
 
@@ -708,9 +692,8 @@ void PlaylistsController::CleanUp() {
 base::SequencedTaskRunner* PlaylistsController::io_task_runner() {
   if (!io_task_runner_) {
     io_task_runner_ = base::CreateSequencedTaskRunnerWithTraits(
-        { base::MayBlock(),
-          base::TaskPriority::BEST_EFFORT,
-          base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN });
+        {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
+         base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
   }
   return io_task_runner_.get();
 }

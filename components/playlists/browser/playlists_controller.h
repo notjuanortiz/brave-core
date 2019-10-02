@@ -21,7 +21,6 @@
 #include "brave/components/playlists/browser/playlists_media_file_controller.h"
 #include "brave/components/playlists/browser/playlists_types.h"
 
-
 namespace base {
 class FilePath;
 class SequencedTaskRunner;
@@ -34,7 +33,7 @@ class BrowserContext;
 namespace network {
 class SharedURLLoaderFactory;
 class SimpleURLLoader;
-}  // network
+}  // namespace network
 
 class PlaylistsControllerObserver;
 class PlaylistsDBController;
@@ -46,7 +45,7 @@ class PlaylistsController : PlaylistsMediaFileController::Client {
 
   bool initialized() const { return initialized_; }
   bool initialization_in_progress() const {
-      return initialization_in_progress_;
+    return initialization_in_progress_;
   }
 
   bool Init(const base::FilePath& base_dir);
@@ -60,6 +59,7 @@ class PlaylistsController : PlaylistsMediaFileController::Client {
   bool RecoverPlaylist(const std::string& id);
   bool DeletePlaylist(const std::string& id);
   bool DeleteAllPlaylists(base::OnceCallback<void(bool)> callback);
+  bool RequestDownload(const std::string& url);
 
   void AddObserver(PlaylistsControllerObserver* observer);
   void RemoveObserver(PlaylistsControllerObserver* observer);
@@ -69,8 +69,7 @@ class PlaylistsController : PlaylistsMediaFileController::Client {
       std::list<std::unique_ptr<network::SimpleURLLoader>>;
 
   // PlaylistsMediaFileController::Client overrides:
-  void OnMediaFileReady(base::Value&& playlist_value,
-                        bool partial) override;
+  void OnMediaFileReady(base::Value&& playlist_value, bool partial) override;
   void OnMediaFileGenerationFailed(base::Value&& playlist_value) override;
 
   // See below comments about step 1,2.
@@ -78,8 +77,7 @@ class PlaylistsController : PlaylistsMediaFileController::Client {
                               const std::string& value,
                               base::Value&& playlist_value);
   void OnPutInitialPlaylist(base::Value&& playlist_value, bool result);
-  void OnPlaylistDirCreated(base::Value&& playlist_value,
-                            bool directory_ready);
+  void OnPlaylistDirCreated(base::Value&& playlist_value, bool directory_ready);
 
   void DownloadThumbnail(base::Value&& playlist_value);
   void OnThumbnailDownloaded(base::Value&& playlist_value,
@@ -88,8 +86,7 @@ class PlaylistsController : PlaylistsMediaFileController::Client {
   void PutThumbnailReadyPlaylistToDB(const std::string& key,
                                      const std::string& json_value,
                                      base::Value&& playlist_value);
-  void OnPutThumbnailReadyPlaylist(base::Value&& playlist_value,
-                                   bool result);
+  void OnPutThumbnailReadyPlaylist(base::Value&& playlist_value, bool result);
   void PutPlayReadyPlaylistToDB(const std::string& key,
                                 const std::string& json_value,
                                 bool partial,
@@ -110,6 +107,8 @@ class PlaylistsController : PlaylistsMediaFileController::Client {
 
   void OnDeleteAllPlaylists(base::OnceCallback<void(bool)> callback,
                             bool deleted);
+
+  void OnRequestDownload(const std::string& url);
 
   void DoRecoverPlaylist(const std::string& id,
                          const std::string& playlist_info_json);

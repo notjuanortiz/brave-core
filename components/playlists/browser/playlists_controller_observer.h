@@ -14,6 +14,7 @@ class PlaylistsControllerObserver : public base::CheckedObserver {
   // |initialized| is false when init failed.
   virtual void OnPlaylistsInitialized(bool initialized) = 0;
   virtual void OnPlaylistsChanged(const PlaylistsChangeParams& params) = 0;
+  virtual void OnPlaylistsDownloadRequested(const std::string& url) = 0;
 
  protected:
   ~PlaylistsControllerObserver() override {}

@@ -7,8 +7,8 @@
 
 #include "base/bind.h"
 #include "base/memory/weak_ptr.h"
-#include "base/values.h"
 #include "base/run_loop.h"
+#include "base/values.h"
 #include "brave/browser/playlists/playlists_service_factory.h"
 #include "brave/components/playlists/browser/playlists_constants.h"
 #include "brave/components/playlists/browser/playlists_controller.h"
@@ -78,9 +78,7 @@ class PlaylistsBrowserTest : public InProcessBrowserTest,
   }
 
   // PlaylistsControllerObserver overrides:
-  void OnPlaylistsInitialized(bool initialized) override {
-    run_loop()->Quit();
-  }
+  void OnPlaylistsInitialized(bool initialized) override { run_loop()->Quit(); }
 
   void OnPlaylistsChanged(const PlaylistsChangeParams& params) override {
     on_playlists_changed_called_count_++;
@@ -103,8 +101,8 @@ class PlaylistsBrowserTest : public InProcessBrowserTest,
   }
 
   PlaylistsService* GetPlaylistsService() {
-    return PlaylistsServiceFactory::GetInstance()->GetForProfile
-        (browser()->profile());
+    return PlaylistsServiceFactory::GetInstance()->GetForProfile(
+        browser()->profile());
   }
 
   void ResetStatus() {
@@ -173,9 +171,7 @@ class PlaylistsBrowserTest : public InProcessBrowserTest,
       run_loop()->Quit();
   }
 
-  void OnDeleteAllPlaylists(bool deleted) {
-    EXPECT_TRUE(deleted);
-  }
+  void OnDeleteAllPlaylists(bool deleted) { EXPECT_TRUE(deleted); }
 
   net::EmbeddedTestServer* https_server() { return https_server_.get(); }
 
@@ -238,18 +234,15 @@ IN_PROC_BROWSER_TEST_F(PlaylistsBrowserTest, PlaylistsApiTest) {
       PlaylistsChangeParams::ChangeType::CHANGE_TYPE_PLAY_READY_PARTIAL));
 
   ResetStatus();
-  controller->GetAllPlaylists(
-      base::BindOnce(&PlaylistsBrowserTest::OnGetAllPlaylists,
-                     weak_factory_.GetWeakPtr(),
-                     3));
+  controller->GetAllPlaylists(base::BindOnce(
+      &PlaylistsBrowserTest::OnGetAllPlaylists, weak_factory_.GetWeakPtr(), 3));
   WaitingToRequestCompletion();
 
   ResetStatus();
   controller->GetPlaylist(
       lastly_added_playlist_id_,
       base::BindOnce(&PlaylistsBrowserTest::OnGetPlaylist,
-                     weak_factory_.GetWeakPtr(),
-                     lastly_added_playlist_id_));
+                     weak_factory_.GetWeakPtr(), lastly_added_playlist_id_));
   WaitingToRequestCompletion();
 
   // Whern existing playlist is recovered, added event is not called.
@@ -271,26 +264,31 @@ IN_PROC_BROWSER_TEST_F(PlaylistsBrowserTest, PlaylistsApiTest) {
 
   // After deleting one playlist, total playlists count should be 2.
   ResetStatus();
-  controller->GetAllPlaylists(
-      base::BindOnce(&PlaylistsBrowserTest::OnGetAllPlaylists,
-                     weak_factory_.GetWeakPtr(),
-                     2));
+  controller->GetAllPlaylists(base::BindOnce(
+      &PlaylistsBrowserTest::OnGetAllPlaylists, weak_factory_.GetWeakPtr(), 2));
   WaitingToRequestCompletion();
 
   ResetStatus();
   on_playlists_changed_called_target_count_ = 1;
-  controller->DeleteAllPlaylists(
-      base::BindOnce(&PlaylistsBrowserTest::OnDeleteAllPlaylists,
-                     weak_factory_.GetWeakPtr()));
+  controller->DeleteAllPlaylists(base::BindOnce(
+      &PlaylistsBrowserTest::OnDeleteAllPlaylists, weak_factory_.GetWeakPtr()));
   WaitingToRequestCompletion();
   EXPECT_TRUE(IsPlaylistsChangeTypeCalled(
       PlaylistsChangeParams::ChangeType::CHANGE_TYPE_ALL_DELETED));
 
   // After deleting all playlists, total playlists count should be 0.
   ResetStatus();
-  controller->GetAllPlaylists(
-      base::BindOnce(&PlaylistsBrowserTest::OnGetAllPlaylists,
-                     weak_factory_.GetWeakPtr(),
-                     0));
+  controller->GetAllPlaylists(base::BindOnce(
+      &PlaylistsBrowserTest::OnGetAllPlaylists, weak_factory_.GetWeakPtr(), 0));
   WaitingToRequestCompletion();
+}
+
+IN_PROC_BROWSER_TEST_F(PlaylistsBrowserTest, PlaylistsDownloadTest) {
+  auto* controller = GetPlaylistsController();
+
+  // Check initialization is done properly.
+  EXPECT_FALSE(controller->initialized());
+  GetPlaylistsService()->Init();
+  WaitingToRequestCompletion();
+  EXPECT_TRUE(controller->initialized());
 }

@@ -14,7 +14,7 @@
       {
         "name": "onPlaylistsChanged",
         "type": "function",
-        "description": "Fired when playlists is changed",
+        "description": "Fired when a playlist is changed",
         "parameters": [
           {
             "name": "changeType",
@@ -37,6 +37,18 @@
             "name": "initialized",
             "type": "boolean",
             "description": "If initialization failed, false is set"
+          }
+        ]
+      },
+      {
+        "name": "onDownloadRequested",
+        "type": "function",
+        "description": "Fired when someone requests the playlists backend to download a URL and use information within the URL to create a playlist",
+        "parameters": [
+          {
+            "name": "url",
+            "type": "string",
+            "description": "URL to download"
           }
         ]
       }
@@ -242,6 +254,18 @@
               }
             ],
             "description": "If an error occurs, runtime.lastError is set to the error message."
+          }
+        ]
+      },
+      {
+        "name": "requestDownload",
+        "type": "function",
+        "description": "requests the playlists backend to download a URL and use information within the URL to create a playlist",
+        "parameters": [
+          {
+            "name": "url",
+            "type": "string",
+            "description": "URL to download"
           }
         ]
       }

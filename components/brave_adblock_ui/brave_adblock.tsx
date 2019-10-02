@@ -55,21 +55,23 @@ window.cr.define('brave_adblock', function () {
           console.log(" ##### " + changeType + " " + id + " #####")
         })
 
-        // make a playlist with a short stock video
-        chrome.bravePlaylists.createPlaylist(
-          {
-            thumbnailUrl: "https://www.cutestockfootage.com/content/10501/thumb100.jpg",
-            playlistName: "Light Leaks Element 423",
-            mediaFiles: [
-              {
-                url: "https://www.cutestockfootage.com/content/10501/preview.mp4",
-                title: "Light Leaks Element 423"
-              }
-            ]
-          }
-        )
+        // request a download (will create a playlist if successful)
+        chrome.bravePlaylists.requestDownload("https://www.youtube.com/watch?v=k8HoGzD4mWw")
+
+//        // make a playlist with a short stock video
+//        chrome.bravePlaylists.createPlaylist(
+//          {
+//            thumbnailUrl: "https://www.cutestockfootage.com/content/10501/thumb100.jpg",
+//            playlistName: "Light Leaks Element 423",
+//            mediaFiles: [
+//              {
+//                url: "https://www.cutestockfootage.com/content/10501/preview.mp4",
+//                title: "Light Leaks Element 423"
+//              }
+//            ]
+//          }
+//        )
       })
-      //chrome.runtime.sendMessage("mnojpmjdmbbfmejpflffifhffcmidifd", {playlistURL: "https://www.youtube.com/watch?v=k8HoGzD4mWw"})
     })
   }
 

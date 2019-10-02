@@ -21,6 +21,7 @@
 namespace CreatePlaylist = extensions::api::brave_playlists::CreatePlaylist;
 namespace GetPlaylist = extensions::api::brave_playlists::GetPlaylist;
 namespace DeletePlaylist = extensions::api::brave_playlists::DeletePlaylist;
+namespace RequestDownload = extensions::api::brave_playlists::RequestDownload;
 
 namespace {
 
@@ -31,8 +32,9 @@ constexpr char kUnknownError[] = "Unknown";
 constexpr char kNotExistPlaylistError[] = "Playlist does not exist";
 
 PlaylistsController* GetPlaylistsController(content::BrowserContext* context) {
-  return PlaylistsServiceFactory::GetInstance()->GetForProfile(
-      Profile::FromBrowserContext(context))->controller();
+  return PlaylistsServiceFactory::GetInstance()
+      ->GetForProfile(Profile::FromBrowserContext(context))
+      ->controller();
 }
 
 CreatePlaylistParams GetCreatePlaylistParamsFromCreateParams(
@@ -59,8 +61,9 @@ ExtensionFunction::ResponseAction BravePlaylistsCreatePlaylistFunction::Run() {
       CreatePlaylist::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
-  if (GetPlaylistsController(browser_context())->CreatePlaylist(
-          GetCreatePlaylistParamsFromCreateParams(params->create_params))) {
+  if (GetPlaylistsController(browser_context())
+          ->CreatePlaylist(
+              GetCreatePlaylistParamsFromCreateParams(params->create_params))) {
     return RespondNow(NoArguments());
   }
 
@@ -77,8 +80,9 @@ ExtensionFunction::ResponseAction BravePlaylistsInitializeFunction::Run() {
   if (GetPlaylistsController(browser_context())->initialized())
     return RespondNow(Error(kAlreadyInitializedError));
 
-  if (PlaylistsServiceFactory::GetInstance()->GetForProfile(
-          Profile::FromBrowserContext(browser_context()))->Init()) {
+  if (PlaylistsServiceFactory::GetInstance()
+          ->GetForProfile(Profile::FromBrowserContext(browser_context()))
+          ->Init()) {
     return RespondNow(NoArguments());
   }
 
@@ -89,10 +93,9 @@ ExtensionFunction::ResponseAction BravePlaylistsGetAllPlaylistsFunction::Run() {
   if (!GetPlaylistsController(browser_context())->initialized())
     return RespondNow(Error(kNotInitializedError));
 
-  if (GetPlaylistsController(browser_context())->GetAllPlaylists(
-          base::BindOnce(
-              &BravePlaylistsGetAllPlaylistsFunction::OnGetAllPlaylists,
-              this)))
+  if (GetPlaylistsController(browser_context())
+          ->GetAllPlaylists(base::BindOnce(
+              &BravePlaylistsGetAllPlaylistsFunction::OnGetAllPlaylists, this)))
     return RespondLater();
 
   return RespondNow(Error(kUnknownError));
@@ -114,10 +117,11 @@ ExtensionFunction::ResponseAction BravePlaylistsGetPlaylistFunction::Run() {
       GetPlaylist::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
-  if (GetPlaylistsController(browser_context())->GetPlaylist(
-          params->id,
-          base::BindOnce(&BravePlaylistsGetPlaylistFunction::OnGetPlaylist,
-                         this))) {
+  if (GetPlaylistsController(browser_context())
+          ->GetPlaylist(
+              params->id,
+              base::BindOnce(&BravePlaylistsGetPlaylistFunction::OnGetPlaylist,
+                             this))) {
     return RespondLater();
   }
 
@@ -136,8 +140,7 @@ ExtensionFunction::ResponseAction BravePlaylistsRecoverPlaylistFunction::Run() {
   return RespondNow(NoArguments());
 }
 
-void BravePlaylistsGetPlaylistFunction::OnGetPlaylist(
-    base::Value playlist) {
+void BravePlaylistsGetPlaylistFunction::OnGetPlaylist(base::Value playlist) {
   if (playlist.is_dict())
     Respond(OneArgument(base::Value::ToUniquePtrValue(std::move(playlist))));
   else
@@ -163,8 +166,8 @@ BravePlaylistsDeleteAllPlaylistsFunction::Run() {
   if (!GetPlaylistsController(browser_context())->initialized())
     return RespondNow(Error(kNotInitializedError));
 
-  if (GetPlaylistsController(browser_context())->DeleteAllPlaylists(
-          base::BindOnce(
+  if (GetPlaylistsController(browser_context())
+          ->DeleteAllPlaylists(base::BindOnce(
               &BravePlaylistsDeleteAllPlaylistsFunction::OnDeleteAllPlaylists,
               this))) {
     return RespondLater();
@@ -176,6 +179,20 @@ BravePlaylistsDeleteAllPlaylistsFunction::Run() {
 void BravePlaylistsDeleteAllPlaylistsFunction::OnDeleteAllPlaylists(
     bool deleted) {
   Respond(OneArgument(base::Value::ToUniquePtrValue(base::Value(deleted))));
+}
+
+ExtensionFunction::ResponseAction BravePlaylistsRequestDownloadFunction::Run() {
+  if (!GetPlaylistsController(browser_context())->initialized())
+    return RespondNow(Error(kNotInitializedError));
+
+  std::unique_ptr<RequestDownload::Params> params(
+      RequestDownload::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  if (GetPlaylistsController(browser_context())->RequestDownload(params->url))
+    return RespondNow(NoArguments());
+
+  return RespondNow(Error(kUnknownError));
 }
 
 }  // namespace api

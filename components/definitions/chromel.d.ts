@@ -230,6 +230,9 @@ declare namespace chrome.bravePlaylists {
   const onInitialized: {
     addListener: (callback: (initialized: boolean) => void) => void
   }
+  const onDownloadRequested: {
+    addListener: (callback: (url: string) => void) => void
+  }
   const isInitialized: (callback: (initialized: boolean) => void) => void
   const initialize: () => void
   const createPlaylist: (createParams: { mediaFiles: { url: string, title: string }[], thumbnailUrl: string, playlistName: string }) => void
@@ -238,6 +241,7 @@ declare namespace chrome.bravePlaylists {
   const recoverPlaylist: (id: string) => void
   const deleteAllPlaylists: (callback: (deleted: boolean) => void) => void
   const deletePlaylist: (id: string) => void
+  const requestDownload: (url: string) => void
 }
 
 declare namespace chrome.braveTheme {
