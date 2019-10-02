@@ -108,8 +108,6 @@ class PlaylistsController : PlaylistsMediaFileController::Client {
   void OnDeleteAllPlaylists(base::OnceCallback<void(bool)> callback,
                             bool deleted);
 
-  void OnRequestDownload(const std::string& url);
-
   void DoRecoverPlaylist(const std::string& id,
                          const std::string& playlist_info_json);
 

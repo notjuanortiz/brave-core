@@ -50,6 +50,16 @@ chrome.bravePlaylists.isInitialized((init) => {
     console.log(" ###### playlist initialized ######")
     chrome.bravePlaylists.onDownloadRequested.addListener((url) => {
       console.log(" ##### download requested: " + url + " #####")
+      const items: any[] = window.youtubedown_urls(url)
+      const mediaFiles = items.map(item => { return { url: item.url, title: item.file } })
+      console.log(JSON.stringify(mediaFiles))
+      chrome.bravePlaylists.createPlaylist(
+        {
+          thumbnailUrl: "",
+          playlistName: "Untitled",
+          mediaFiles: mediaFiles
+        }
+      )
     })
   })
 })

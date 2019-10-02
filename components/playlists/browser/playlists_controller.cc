@@ -525,14 +525,9 @@ bool PlaylistsController::RequestDownload(const std::string& url) {
   // This is handled by third-party code (in JavaScript) so all we do here is
   // tell observers that a download was requested and trust that someone is
   // listening who will handle it.
-  return io_task_runner()->PostTask(
-      FROM_HERE, base::BindOnce(&PlaylistsController::OnRequestDownload,
-                                weak_factory_.GetWeakPtr(), url));
-}
-
-void PlaylistsController::OnRequestDownload(const std::string& url) {
   for (PlaylistsControllerObserver& obs : observers_)
     obs.OnPlaylistsDownloadRequested(url);
+  return true;
 }
 
 void PlaylistsController::OnDeletePlaylist(const std::string& playlist_id,
