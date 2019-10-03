@@ -12,6 +12,7 @@ import("//third_party/protobuf/proto_library.gni")
 
 source_set("browser_process") {
   visibility = [
+    "//android_webview:common",
     "//chrome/browser/*",
     "//brave/browser/*",
     "//brave:browser_dependencies",
@@ -258,6 +259,7 @@ source_set("version_info") {
 
 source_set("browser") {
   visibility = [
+    "//android_webview:common",
     "//chrome/browser/*",
     "//brave/browser/*",
     "//brave:browser_dependencies",
