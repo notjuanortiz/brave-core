@@ -96,6 +96,8 @@ class PlaylistsBrowserTest : public InProcessBrowserTest,
     }
   }
 
+  void OnPlaylistsDownloadRequested(const std::string& url) override {}
+
   PlaylistsController* GetPlaylistsController() {
     return GetPlaylistsService()->controller();
   }
