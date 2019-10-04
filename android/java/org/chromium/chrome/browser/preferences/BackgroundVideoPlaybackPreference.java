@@ -18,12 +18,19 @@ public class BackgroundVideoPlaybackPreference
 
         ChromeSwitchPreferenceCompat playbackPref =
                 (ChromeSwitchPreferenceCompat) findPreference(BACKGROUND_VIDEO_PLAYBACK_KEY);
-        playbackPref.setChecked(true);
+        playbackPref.setChecked(BravePrefServiceBridge.getInstance().getBackgroundVideoPlaybackEnabled());
         playbackPref.setOnPreferenceChangeListener(this);
     }
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
+        BravePrefServiceBridge.getInstance().setBackgroundVideoPlaybackEnabled((boolean) newValue);
         return true;
+    }
+
+    public static int getPreferenceSummary() {
+        return BravePrefServiceBridge.getInstance().getBackgroundVideoPlaybackEnabled()
+            ? R.string.prefs_background_video_playback_summary_enabled
+            : R.string.prefs_background_video_playback_summary_disabled;
     }
 }
